@@ -50,7 +50,7 @@ end
 
 
 function __fish_print_docker_images --description 'Print a list of docker images'
-	docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
+    docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
     docker images --format "{{.ID}}\t{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
 end
 
@@ -62,13 +62,13 @@ end
 
 function __fish_print_docker_containers --description 'Print a list of docker containers'
     if test -n "$argv"
-		for stat in $argv
-			docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
-			docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
-		end
+        for stat in $argv
+            docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
+            docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
+        end
     else
-		docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
-		docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
+        docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
+        docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
     end
 end
 
