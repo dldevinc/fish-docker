@@ -151,6 +151,14 @@ complete -c docker -n '__fish_docker_arguments_startswith container pause' -fka 
 complete -c docker -n '__fish_docker_arguments_equals port' -fka '(__fish_print_docker_containers running paused)'
 complete -c docker -n '__fish_docker_arguments_equals container port' -fka '(__fish_print_docker_containers running paused)'
 
+# docker pull
+complete -c docker -n '__fish_docker_arguments_startswith pull' -fka '(__fish_print_docker_images)'
+complete -c docker -n '__fish_docker_arguments_startswith image pull' -fka '(__fish_print_docker_images)'
+
+# docker push
+complete -c docker -n '__fish_docker_arguments_startswith push' -fka '(__fish_print_docker_images)'
+complete -c docker -n '__fish_docker_arguments_startswith image push' -fka '(__fish_print_docker_images)'
+
 # docker rename
 complete -c docker -n '__fish_docker_arguments_equals rename' -fka '(__fish_print_docker_containers)'
 complete -c docker -n '__fish_docker_arguments_equals container rename' -fka '(__fish_print_docker_containers)'
