@@ -121,3 +121,4 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -f
 
 
 # ============================= GENERATED ==============================
+

@@ -225,3 +225,4 @@ complete -c docker -n '__fish_docker_arguments_startswith container wait' -fka '
 
 
 # ============================= GENERATED ==============================
+

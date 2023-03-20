@@ -2,10 +2,11 @@ import re
 import subprocess
 from typing import Dict, List
 
+import conf
 import exceptions
 
 re_usage = re.compile(r"^Usage:\s+(.*)$", flags=re.MULTILINE)
-re_options = re.compile(r"^Options:(.*?)(?:\n\n|\Z)", flags=re.DOTALL | re.MULTILINE)
+re_options = re.compile(r"Options:(.*?)(?:\n\n|\Z)", flags=re.DOTALL | re.MULTILINE)
 re_option = re.compile(
     r"(?:-(?P<short>\w))?"
     r"(?:,\s)?"
@@ -16,6 +17,14 @@ re_commands = re.compile(r"Commands:(.*?)(?:\n\n|\Z)", flags=re.DOTALL | re.MULT
 re_command = re.compile(r"(?P<name>[-\w]+\*?)\s{2,}(?P<description>.*)")
 
 
+def get_cleaned_command(command: str) -> str:
+    return " ".join([
+        part
+        for part in re.split(r"\s+", command)
+        if not part.startswith("-")
+    ])
+
+
 def get_command_output(command: str, env: Dict = None) -> str:
     result = subprocess.run(
         command,
@@ -24,6 +33,9 @@ def get_command_output(command: str, env: Dict = None) -> str:
         capture_output=True,
         env=env
     )
+    if result.returncode:
+        raise RuntimeError(result.stderr)
+
     return result.stdout
 
 
@@ -78,7 +90,8 @@ def convert_option(option: Dict) -> str:
 
     if "description" in option:
         if "'" in option["description"] and "\"" in option["description"]:
-            raise exceptions.QuotesConflictError(option)
+            description = option["description"].replace("'", "\'")
+            line.append(f'-d "{description}"')
 
         if "'" in option["description"]:
             line.append(f'-d "{option["description"]}"')
@@ -88,12 +101,15 @@ def convert_option(option: Dict) -> str:
     return " ".join(line)
 
 
-def parse_subcommands(output: str) -> List[Dict]:
+def parse_subcommands(output: str, extra_commands: List[Dict] = None) -> List[Dict]:
     command_blocks = re_commands.findall(output)
     if command_blocks is None:
         return []
 
     commands = []
+
+    if extra_commands:
+        commands.extend(extra_commands)
 
     for command_block in command_blocks:
         # strip lines
@@ -156,7 +172,8 @@ def parse_command_info(command: str, env: Dict = None) -> Dict:
     if options:
         result["options"] = options
 
-    subcommands = parse_subcommands(output)
+    extra_commands = conf.HIDDEN_COMMANDS.get(get_cleaned_command(command))
+    subcommands = parse_subcommands(output, extra_commands=extra_commands)
     if subcommands:
         result["subcommands"] = subcommands
 

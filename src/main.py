@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-import re
+import os
 from pathlib import Path
 from typing import Dict
 
@@ -18,12 +18,7 @@ def process_command(params: Dict):
 
     parsed_info = utils.parse_command_info(command, params.get("env"))
 
-    cleaned_command = " ".join([
-        part
-        for part in re.split(r"\s+", command)
-        if not part.startswith("-")
-    ])
-    yield f"# {cleaned_command}"
+    yield f"# {utils.get_cleaned_command(command)}"
 
     if "usage" in parsed_info:
         yield f"# Usage: {parsed_info['usage']}"
@@ -81,8 +76,8 @@ def process_command(params: Dict):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         usage="\n"
-              "  python3 main.py -- docker > completions/docker.fish"
-              "  python3 main.py -- docker-compose > completions/docker-compose.fish"
+              "  python3 src/main.py -- docker > completions/docker.fish\n"
+              "  python3 src/main.py -- docker-compose > completions/docker-compose.fish"
     )
     parser.add_argument("command", type=str, nargs="+", default="docker")
     parser.add_argument("--buildkit", action="store_true")
@@ -97,7 +92,8 @@ if __name__ == "__main__":
         "level": 0,
         "injections": [],
         "env": {
-            "DOCKER_BUILDKIT": str(int(options.buildkit))
+            "DOCKER_BUILDKIT": str(int(options.buildkit)),
+            "PATH": os.environ["PATH"]
         }
     }
 
