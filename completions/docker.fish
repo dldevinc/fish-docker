@@ -82,7 +82,7 @@ complete -e -c docker
 
 
 # docker attach
-complete -c docker -n '__fish_docker_arguments_startswith attach' -ka '(__fish_print_docker_containers running)' 
+complete -c docker -n '__fish_docker_arguments_startswith attach' -ka '(__fish_print_docker_containers running)'
 complete -c docker -n '__fish_docker_arguments_startswith container attach' -ka '(__fish_print_docker_containers running)'
 
 # docker commit
@@ -95,11 +95,11 @@ complete -c docker -n '__fish_docker_arguments_startswith container cp' -ka '(__
 
 # docker create
 complete -c docker -n '__fish_docker_arguments_startswith create' -ka '(__fish_print_docker_images)'
-complete -c docker -n '__fish_docker_arguments_startswith container create' -ka '(__fish_print_docker_images)' 
+complete -c docker -n '__fish_docker_arguments_startswith container create' -ka '(__fish_print_docker_images)'
 
 # docker diff
-complete -c docker -n '__fish_docker_arguments_equals diff' -fka '(__fish_print_docker_containers)' 
-complete -c docker -n '__fish_docker_arguments_equals container diff' -fka '(__fish_print_docker_containers)' 
+complete -c docker -n '__fish_docker_arguments_equals diff' -fka '(__fish_print_docker_containers)'
+complete -c docker -n '__fish_docker_arguments_equals container diff' -fka '(__fish_print_docker_containers)'
 
 # docker exec
 complete -c docker -n '__fish_docker_arguments_startswith exec' -ka '(__fish_print_docker_containers running)'
@@ -233,7 +233,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -l config -r -d 'Locatio
 complete -c docker -n '__fish_is_first_docker_argument' -l context -s c -r -d 'Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker context use")'
 complete -c docker -n '__fish_is_first_docker_argument' -l debug -s D -d 'Enable debug mode'
 complete -c docker -n '__fish_is_first_docker_argument' -l host -s H -r -d 'Daemon socket(s) to connect to'
-complete -c docker -n '__fish_is_first_docker_argument' -l log-level -s l -r -d 'Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")'
+complete -c docker -n '__fish_is_first_docker_argument' -l log-level -s l -r -d 'Set the logging level ("debug", "info", "warn", "error", "fatal") (default "info")'
 complete -c docker -n '__fish_is_first_docker_argument' -l tls -d 'Use TLS; implied by --tlsverify'
 complete -c docker -n '__fish_is_first_docker_argument' -l tlscacert -r -d 'Trust certs signed only by this CA (default "/home/jon/.docker/ca.pem")'
 complete -c docker -n '__fish_is_first_docker_argument' -l tlscert -r -d 'Path to TLS certificate file (default "/home/jon/.docker/cert.pem")'
@@ -251,7 +251,7 @@ complete -c docker -n '__fish_docker_arguments_startswith attach' -l sig-proxy -
 # docker build
 # Usage: docker build [OPTIONS] PATH | URL | -
 complete -c docker -n '__fish_is_first_docker_argument' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l build-arg -r -d 'Set build-time variables'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l cache-from -r -d 'Images to consider as cache sources'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
@@ -262,21 +262,22 @@ complete -c docker -n '__fish_docker_arguments_startswith build' -l cpu-shares -
 complete -c docker -n '__fish_docker_arguments_startswith build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l file -s f -r -d "Name of the Dockerfile (Default is 'PATH/Dockerfile')"
+complete -c docker -n '__fish_docker_arguments_startswith build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l force-rm -d 'Always remove intermediate containers'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l iidfile -r -d 'Write the image ID to the file'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l label -r -d 'Set metadata for an image'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l memory-swap -r -d "Swap limit equal to memory plus swap: '-1' to enable unlimited swap"
+complete -c docker -n '__fish_docker_arguments_startswith build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l no-cache -d 'Do not use cache when building the image'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l platform -r -d 'Set platform if server is multi-platform capable'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l pull -d 'Always attempt to pull a newer version of the image'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l security-opt -r -d 'Security options'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l shm-size -r -d 'Size of /dev/shm'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l tag -s t -r -d "Name and optionally a tag in the 'name:tag' format"
+complete -c docker -n '__fish_docker_arguments_startswith build' -l shm-size -r -d 'Size of "/dev/shm"'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l target -r -d 'Set the target build stage to build.'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l ulimit -r -d 'Ulimit options (default [])'
 
@@ -287,7 +288,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa builder -d 'Manage b
 # docker builder build
 # Usage: docker builder build [OPTIONS] PATH | URL | -
 complete -c docker -n '__fish_docker_arguments_equals builder' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l build-arg -r -d 'Set build-time variables'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cache-from -r -d 'Images to consider as cache sources'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
@@ -298,21 +299,22 @@ complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpu-
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l file -s f -r -d "Name of the Dockerfile (Default is 'PATH/Dockerfile')"
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l force-rm -d 'Always remove intermediate containers'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l iidfile -r -d 'Write the image ID to the file'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l label -r -d 'Set metadata for an image'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l memory-swap -r -d "Swap limit equal to memory plus swap: '-1' to enable unlimited swap"
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l no-cache -d 'Do not use cache when building the image'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l platform -r -d 'Set platform if server is multi-platform capable'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l pull -d 'Always attempt to pull a newer version of the image'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l security-opt -r -d 'Security options'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l shm-size -r -d 'Size of /dev/shm'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l tag -s t -r -d "Name and optionally a tag in the 'name:tag' format"
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l shm-size -r -d 'Size of "/dev/shm"'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l target -r -d 'Set the target build stage to build.'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l ulimit -r -d 'Ulimit options (default [])'
 
@@ -320,7 +322,7 @@ complete -c docker -n '__fish_docker_arguments_startswith builder build' -l ulim
 # Usage: docker builder prune
 complete -c docker -n '__fish_docker_arguments_equals builder' -fa prune -d 'Remove build cache'
 complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l all -s a -d 'Remove all unused build cache, not just dangling ones'
-complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l filter -r -d "Provide filter values (e.g. 'until=24h')"
+complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l filter -r -d 'Provide filter values (e.g. "until=24h")'
 complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l force -s f -d 'Do not prompt for confirmation'
 complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l keep-storage -r -d 'Amount of disk space to keep for cache'
 
@@ -334,7 +336,7 @@ complete -c docker -n '__fish_docker_arguments_startswith commit' -l pause -s p 
 
 # docker config
 # Usage: docker config COMMAND
-complete -c docker -n '__fish_is_first_docker_argument' -fa config -d 'Manage Docker configs'
+complete -c docker -n '__fish_is_first_docker_argument' -fa config -d 'Manage Swarm configs'
 
 # docker config create
 # Usage: docker config create [OPTIONS] CONFIG file|-
@@ -345,14 +347,14 @@ complete -c docker -n '__fish_docker_arguments_startswith config create' -l temp
 # docker config inspect
 # Usage: docker config inspect [OPTIONS] CONFIG [CONFIG...]
 complete -c docker -n '__fish_docker_arguments_equals config' -fa inspect -d 'Display detailed information on one or more configs'
-complete -c docker -n '__fish_docker_arguments_startswith config inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith config inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith config inspect' -l pretty -d 'Print the information in a human friendly format'
 
 # docker config ls
 # Usage: docker config ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals config' -fa ls -d 'List configs'
 complete -c docker -n '__fish_docker_arguments_startswith config ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith config ls' -l format -r -d 'Pretty-print configs using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith config ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith config ls' -l quiet -s q -d 'Only display IDs'
 
 # docker config rm
@@ -383,6 +385,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container commit' -l p
 complete -c docker -n '__fish_docker_arguments_equals container' -fa cp -d 'Copy files/folders between a container and the local filesystem'
 complete -c docker -n '__fish_docker_arguments_startswith container cp' -l archive -s a -d 'Archive mode (copy all uid/gid information)'
 complete -c docker -n '__fish_docker_arguments_startswith container cp' -l follow-link -s L -d 'Always follow symbol link in SRC_PATH'
+complete -c docker -n '__fish_docker_arguments_startswith container cp' -l quiet -s q -d 'Suppress progress output during copy. Progress output is automatically suppressed if no terminal is attached'
 
 # docker container create
 # Usage: docker container create [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -459,14 +462,15 @@ complete -c docker -n '__fish_docker_arguments_startswith container create' -l p
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l privileged -d 'Give extended privileges to this container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l publish -s p -r -d "Publish a container's port(s) to the host"
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l publish-all -s P -d 'Publish all exposed ports to random ports'
-complete -c docker -n '__fish_docker_arguments_startswith container create' -l pull -r -d 'Pull image before creating ("always"|"missing"|"never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith container create' -l pull -r -d 'Pull image before creating ("always", "|missing", "never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith container create' -l quiet -s q -d 'Suppress the pull output'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l read-only -d "Mount the container's root filesystem as read only"
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l restart -r -d 'Restart policy to apply when a container exits (default "no")'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l rm -d 'Automatically remove the container when it exits'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l runtime -r -d 'Runtime to use for this container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l security-opt -r -d 'Security Options'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l shm-size -r -d 'Size of /dev/shm'
-complete -c docker -n '__fish_docker_arguments_startswith container create' -l stop-signal -r -d 'Signal to stop a container (default "SIGTERM")'
+complete -c docker -n '__fish_docker_arguments_startswith container create' -l stop-signal -r -d 'Signal to stop the container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l stop-timeout -r -d 'Timeout (in seconds) to stop a container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l storage-opt -r -d 'Storage driver options for the container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l sysctl -r -d 'Sysctl options (default map[])'
@@ -487,7 +491,7 @@ complete -c docker -n '__fish_docker_arguments_equals container' -fa diff -d "In
 
 # docker container exec
 # Usage: docker container exec [OPTIONS] CONTAINER COMMAND [ARG...]
-complete -c docker -n '__fish_docker_arguments_equals container' -fa exec -d 'Run a command in a running container'
+complete -c docker -n '__fish_docker_arguments_equals container' -fa exec -d 'Execute a command in a running container'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l detach -s d -d 'Detached mode: run command in the background'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l detach-keys -r -d 'Override the key sequence for detaching a container'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l env -s e -r -d 'Set environment variables'
@@ -495,7 +499,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container exec' -l env
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l interactive -s i -d 'Keep STDIN open even if not attached'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l privileged -d 'Give extended privileges to the command'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l tty -s t -d 'Allocate a pseudo-TTY'
-complete -c docker -n '__fish_docker_arguments_startswith container exec' -l user -s u -r -d 'Username or UID (format: <name|uid>[:<group|gid>])'
+complete -c docker -n '__fish_docker_arguments_startswith container exec' -l user -s u -r -d 'Username or UID (format: "<name|uid>[:<group|gid>]")'
 complete -c docker -n '__fish_docker_arguments_startswith container exec' -l workdir -s w -r -d 'Working directory inside the container'
 
 # docker container export
@@ -506,30 +510,30 @@ complete -c docker -n '__fish_docker_arguments_startswith container export' -l o
 # docker container inspect
 # Usage: docker container inspect [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa inspect -d 'Display detailed information on one or more containers'
-complete -c docker -n '__fish_docker_arguments_startswith container inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith container inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith container inspect' -l size -s s -d 'Display total file sizes'
 
 # docker container kill
 # Usage: docker container kill [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa kill -d 'Kill one or more running containers'
-complete -c docker -n '__fish_docker_arguments_startswith container kill' -l signal -s s -r -d 'Signal to send to the container (default "KILL")'
+complete -c docker -n '__fish_docker_arguments_startswith container kill' -l signal -s s -r -d 'Signal to send to the container'
 
 # docker container logs
 # Usage: docker container logs [OPTIONS] CONTAINER
 complete -c docker -n '__fish_docker_arguments_equals container' -fa logs -d 'Fetch the logs of a container'
 complete -c docker -n '__fish_docker_arguments_startswith container logs' -l details -d 'Show extra details provided to logs'
 complete -c docker -n '__fish_docker_arguments_startswith container logs' -l follow -s f -d 'Follow log output'
-complete -c docker -n '__fish_docker_arguments_startswith container logs' -l since -r -d 'Show logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)'
+complete -c docker -n '__fish_docker_arguments_startswith container logs' -l since -r -d 'Show logs since timestamp (e.g. "2013-01-02T13:23:37Z") or relative (e.g. "42m" for 42 minutes)'
 complete -c docker -n '__fish_docker_arguments_startswith container logs' -l tail -s n -r -d 'Number of lines to show from the end of the logs (default "all")'
 complete -c docker -n '__fish_docker_arguments_startswith container logs' -l timestamps -s t -d 'Show timestamps'
-complete -c docker -n '__fish_docker_arguments_startswith container logs' -l until -r -d 'Show logs before a timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)'
+complete -c docker -n '__fish_docker_arguments_startswith container logs' -l until -r -d 'Show logs before a timestamp (e.g. "2013-01-02T13:23:37Z") or relative (e.g. "42m" for 42 minutes)'
 
 # docker container ls
 # Usage: docker container ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa ls -d 'List containers'
 complete -c docker -n '__fish_docker_arguments_startswith container ls' -l all -s a -d 'Show all containers (default shows just running)'
 complete -c docker -n '__fish_docker_arguments_startswith container ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith container ls' -l format -r -d 'Pretty-print containers using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith container ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith container ls' -l last -s n -r -d 'Show n last created containers (includes all states) (default -1)'
 complete -c docker -n '__fish_docker_arguments_startswith container ls' -l latest -s l -d 'Show the latest created container (includes all states)'
 complete -c docker -n '__fish_docker_arguments_startswith container ls' -l no-trunc -d "Don't truncate output"
@@ -547,7 +551,7 @@ complete -c docker -n '__fish_docker_arguments_equals container' -fa port -d 'Li
 # docker container prune
 # Usage: docker container prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa prune -d 'Remove all stopped containers'
-complete -c docker -n '__fish_docker_arguments_startswith container prune' -l filter -r -d "Provide filter values (e.g. 'until=<timestamp>')"
+complete -c docker -n '__fish_docker_arguments_startswith container prune' -l filter -r -d 'Provide filter values (e.g. "until=<timestamp>")'
 complete -c docker -n '__fish_docker_arguments_startswith container prune' -l force -s f -d 'Do not prompt for confirmation'
 
 # docker container rename
@@ -557,7 +561,8 @@ complete -c docker -n '__fish_docker_arguments_equals container' -fa rename -d '
 # docker container restart
 # Usage: docker container restart [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa restart -d 'Restart one or more containers'
-complete -c docker -n '__fish_docker_arguments_startswith container restart' -l time -s t -r -d 'Seconds to wait for stop before killing the container (default 10)'
+complete -c docker -n '__fish_docker_arguments_startswith container restart' -l signal -s s -r -d 'Signal to send to the container'
+complete -c docker -n '__fish_docker_arguments_startswith container restart' -l time -s t -r -d 'Seconds to wait before killing the container'
 
 # docker container rm
 # Usage: docker container rm [OPTIONS] CONTAINER [CONTAINER...]
@@ -568,7 +573,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container rm' -l volum
 
 # docker container run
 # Usage: docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]
-complete -c docker -n '__fish_docker_arguments_equals container' -fa run -d 'Run a command in a new container'
+complete -c docker -n '__fish_docker_arguments_equals container' -fa run -d 'Create and run a new container from an image'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
@@ -643,7 +648,8 @@ complete -c docker -n '__fish_docker_arguments_startswith container run' -l plat
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l privileged -d 'Give extended privileges to this container'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l publish -s p -r -d "Publish a container's port(s) to the host"
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l publish-all -s P -d 'Publish all exposed ports to random ports'
-complete -c docker -n '__fish_docker_arguments_startswith container run' -l pull -r -d 'Pull image before running ("always"|"missing"|"never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith container run' -l pull -r -d 'Pull image before running ("always", "missing", "never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith container run' -l quiet -s q -d 'Suppress the pull output'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l read-only -d "Mount the container's root filesystem as read only"
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l restart -r -d 'Restart policy to apply when a container exits (default "no")'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l rm -d 'Automatically remove the container when it exits'
@@ -651,7 +657,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container run' -l runt
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l security-opt -r -d 'Security Options'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l shm-size -r -d 'Size of /dev/shm'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l sig-proxy -d 'Proxy received signals to the process (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith container run' -l stop-signal -r -d 'Signal to stop a container (default "SIGTERM")'
+complete -c docker -n '__fish_docker_arguments_startswith container run' -l stop-signal -r -d 'Signal to stop the container'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l stop-timeout -r -d 'Timeout (in seconds) to stop a container'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l storage-opt -r -d 'Storage driver options for the container'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l sysctl -r -d 'Sysctl options (default map[])'
@@ -677,14 +683,15 @@ complete -c docker -n '__fish_docker_arguments_startswith container start' -l in
 # Usage: docker container stats [OPTIONS] [CONTAINER...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa stats -d 'Display a live stream of container(s) resource usage statistics'
 complete -c docker -n '__fish_docker_arguments_startswith container stats' -l all -s a -d 'Show all containers (default shows just running)'
-complete -c docker -n '__fish_docker_arguments_startswith container stats' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith container stats' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith container stats' -l no-stream -d 'Disable streaming stats and only pull the first result'
 complete -c docker -n '__fish_docker_arguments_startswith container stats' -l no-trunc -d 'Do not truncate output'
 
 # docker container stop
 # Usage: docker container stop [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa stop -d 'Stop one or more running containers'
-complete -c docker -n '__fish_docker_arguments_startswith container stop' -l time -s t -r -d 'Seconds to wait for stop before killing it (default 10)'
+complete -c docker -n '__fish_docker_arguments_startswith container stop' -l signal -s s -r -d 'Signal to send to the container'
+complete -c docker -n '__fish_docker_arguments_startswith container stop' -l time -s t -r -d 'Seconds to wait before killing the container'
 
 # docker container top
 # Usage: docker container top CONTAINER [ps OPTIONS]
@@ -706,10 +713,9 @@ complete -c docker -n '__fish_docker_arguments_startswith container update' -l c
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l cpus -r -d 'Number of CPUs'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith container update' -l kernel-memory -r -d 'Kernel memory limit'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l memory -s m -r -d 'Memory limit'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l memory-reservation -r -d 'Memory soft limit'
-complete -c docker -n '__fish_docker_arguments_startswith container update' -l memory-swap -r -d "Swap limit equal to memory plus swap: '-1' to enable unlimited swap"
+complete -c docker -n '__fish_docker_arguments_startswith container update' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l pids-limit -r -d 'Tune container pids limit (set -1 for unlimited)'
 complete -c docker -n '__fish_docker_arguments_startswith container update' -l restart -r -d 'Restart policy to apply when a container exits'
 
@@ -724,16 +730,13 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa context -d 'Manage c
 # docker context create
 # Usage: docker context create [OPTIONS] CONTEXT
 complete -c docker -n '__fish_docker_arguments_equals context' -fa create -d 'Create a context'
-complete -c docker -n '__fish_docker_arguments_startswith context create' -l default-stack-orchestrator -r -d 'Default orchestrator for stack operations to use with this context (swarm|kubernetes|all)'
 complete -c docker -n '__fish_docker_arguments_startswith context create' -l description -r -d 'Description of the context'
 complete -c docker -n '__fish_docker_arguments_startswith context create' -l docker -r -d 'set the docker endpoint (default [])'
 complete -c docker -n '__fish_docker_arguments_startswith context create' -l from -r -d 'create context from a named context'
-complete -c docker -n '__fish_docker_arguments_startswith context create' -l kubernetes -r -d 'set the kubernetes endpoint (default [])'
 
 # docker context export
 # Usage: docker context export [OPTIONS] CONTEXT [FILE|-]
-complete -c docker -n '__fish_docker_arguments_equals context' -fa export -d 'Export a context to a tar or kubeconfig file'
-complete -c docker -n '__fish_docker_arguments_startswith context export' -l kubeconfig -d 'Export as a kubeconfig file'
+complete -c docker -n '__fish_docker_arguments_equals context' -fa export -d 'Export a context to a tar archive FILE or a tar stream on STDOUT.'
 
 # docker context import
 # Usage: docker context import CONTEXT FILE|-
@@ -742,12 +745,12 @@ complete -c docker -n '__fish_docker_arguments_equals context' -fa import -d 'Im
 # docker context inspect
 # Usage: docker context inspect [OPTIONS] [CONTEXT] [CONTEXT...]
 complete -c docker -n '__fish_docker_arguments_equals context' -fa inspect -d 'Display detailed information on one or more contexts'
-complete -c docker -n '__fish_docker_arguments_startswith context inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith context inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker context ls
 # Usage: docker context ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals context' -fa ls -d 'List contexts'
-complete -c docker -n '__fish_docker_arguments_startswith context ls' -l format -r -d 'Pretty-print contexts using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith context ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith context ls' -l quiet -s q -d 'Only show context names'
 
 # docker context rm
@@ -755,13 +758,15 @@ complete -c docker -n '__fish_docker_arguments_startswith context ls' -l quiet -
 complete -c docker -n '__fish_docker_arguments_equals context' -fa rm -d 'Remove one or more contexts'
 complete -c docker -n '__fish_docker_arguments_startswith context rm' -l force -s f -d 'Force the removal of a context in use'
 
+# docker context show
+# Usage: docker context show
+complete -c docker -n '__fish_docker_arguments_equals context' -fa show -d 'Print the name of the current context'
+
 # docker context update
 # Usage: docker context update [OPTIONS] CONTEXT
 complete -c docker -n '__fish_docker_arguments_equals context' -fa update -d 'Update a context'
-complete -c docker -n '__fish_docker_arguments_startswith context update' -l default-stack-orchestrator -r -d 'Default orchestrator for stack operations to use with this context (swarm|kubernetes|all)'
 complete -c docker -n '__fish_docker_arguments_startswith context update' -l description -r -d 'Description of the context'
 complete -c docker -n '__fish_docker_arguments_startswith context update' -l docker -r -d 'set the docker endpoint (default [])'
-complete -c docker -n '__fish_docker_arguments_startswith context update' -l kubernetes -r -d 'set the kubernetes endpoint (default [])'
 
 # docker context use
 # Usage: docker context use CONTEXT
@@ -772,6 +777,7 @@ complete -c docker -n '__fish_docker_arguments_equals context' -fa use -d 'Set t
 complete -c docker -n '__fish_is_first_docker_argument' -fa cp -d 'Copy files/folders between a container and the local filesystem'
 complete -c docker -n '__fish_docker_arguments_startswith cp' -l archive -s a -d 'Archive mode (copy all uid/gid information)'
 complete -c docker -n '__fish_docker_arguments_startswith cp' -l follow-link -s L -d 'Always follow symbol link in SRC_PATH'
+complete -c docker -n '__fish_docker_arguments_startswith cp' -l quiet -s q -d 'Suppress progress output during copy. Progress output is automatically suppressed if no terminal is attached'
 
 # docker create
 # Usage: docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -848,14 +854,15 @@ complete -c docker -n '__fish_docker_arguments_startswith create' -l platform -r
 complete -c docker -n '__fish_docker_arguments_startswith create' -l privileged -d 'Give extended privileges to this container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l publish -s p -r -d "Publish a container's port(s) to the host"
 complete -c docker -n '__fish_docker_arguments_startswith create' -l publish-all -s P -d 'Publish all exposed ports to random ports'
-complete -c docker -n '__fish_docker_arguments_startswith create' -l pull -r -d 'Pull image before creating ("always"|"missing"|"never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith create' -l pull -r -d 'Pull image before creating ("always", "|missing", "never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith create' -l quiet -s q -d 'Suppress the pull output'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l read-only -d "Mount the container's root filesystem as read only"
 complete -c docker -n '__fish_docker_arguments_startswith create' -l restart -r -d 'Restart policy to apply when a container exits (default "no")'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l rm -d 'Automatically remove the container when it exits'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l runtime -r -d 'Runtime to use for this container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l security-opt -r -d 'Security Options'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l shm-size -r -d 'Size of /dev/shm'
-complete -c docker -n '__fish_docker_arguments_startswith create' -l stop-signal -r -d 'Signal to stop a container (default "SIGTERM")'
+complete -c docker -n '__fish_docker_arguments_startswith create' -l stop-signal -r -d 'Signal to stop the container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l stop-timeout -r -d 'Timeout (in seconds) to stop a container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l storage-opt -r -d 'Storage driver options for the container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l sysctl -r -d 'Sysctl options (default map[])'
@@ -884,7 +891,7 @@ complete -c docker -n '__fish_docker_arguments_startswith events' -l until -r -d
 
 # docker exec
 # Usage: docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
-complete -c docker -n '__fish_is_first_docker_argument' -fa exec -d 'Run a command in a running container'
+complete -c docker -n '__fish_is_first_docker_argument' -fa exec -d 'Execute a command in a running container'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l detach -s d -d 'Detached mode: run command in the background'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l detach-keys -r -d 'Override the key sequence for detaching a container'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l env -s e -r -d 'Set environment variables'
@@ -892,7 +899,7 @@ complete -c docker -n '__fish_docker_arguments_startswith exec' -l env-file -r -
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l interactive -s i -d 'Keep STDIN open even if not attached'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l privileged -d 'Give extended privileges to the command'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l tty -s t -d 'Allocate a pseudo-TTY'
-complete -c docker -n '__fish_docker_arguments_startswith exec' -l user -s u -r -d 'Username or UID (format: <name|uid>[:<group|gid>])'
+complete -c docker -n '__fish_docker_arguments_startswith exec' -l user -s u -r -d 'Username or UID (format: "<name|uid>[:<group|gid>]")'
 complete -c docker -n '__fish_docker_arguments_startswith exec' -l workdir -s w -r -d 'Working directory inside the container'
 
 # docker export
@@ -903,7 +910,7 @@ complete -c docker -n '__fish_docker_arguments_startswith export' -l output -s o
 # docker history
 # Usage: docker history [OPTIONS] IMAGE
 complete -c docker -n '__fish_is_first_docker_argument' -fa history -d 'Show the history of an image'
-complete -c docker -n '__fish_docker_arguments_startswith history' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith history' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith history' -l human -s H -d 'Print sizes and dates in human readable format (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith history' -l no-trunc -d "Don't truncate output"
 complete -c docker -n '__fish_docker_arguments_startswith history' -l quiet -s q -d 'Only show image IDs'
@@ -915,7 +922,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa image -d 'Manage ima
 # docker image build
 # Usage: docker image build [OPTIONS] PATH | URL | -
 complete -c docker -n '__fish_docker_arguments_equals image' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l build-arg -r -d 'Set build-time variables'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l cache-from -r -d 'Images to consider as cache sources'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
@@ -926,28 +933,29 @@ complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpu-sh
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l file -s f -r -d "Name of the Dockerfile (Default is 'PATH/Dockerfile')"
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l force-rm -d 'Always remove intermediate containers'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l iidfile -r -d 'Write the image ID to the file'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l label -r -d 'Set metadata for an image'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l memory-swap -r -d "Swap limit equal to memory plus swap: '-1' to enable unlimited swap"
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l no-cache -d 'Do not use cache when building the image'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l platform -r -d 'Set platform if server is multi-platform capable'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l pull -d 'Always attempt to pull a newer version of the image'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l security-opt -r -d 'Security options'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l shm-size -r -d 'Size of /dev/shm'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l tag -s t -r -d "Name and optionally a tag in the 'name:tag' format"
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l shm-size -r -d 'Size of "/dev/shm"'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l target -r -d 'Set the target build stage to build.'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l ulimit -r -d 'Ulimit options (default [])'
 
 # docker image history
 # Usage: docker image history [OPTIONS] IMAGE
 complete -c docker -n '__fish_docker_arguments_equals image' -fa history -d 'Show the history of an image'
-complete -c docker -n '__fish_docker_arguments_startswith image history' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith image history' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith image history' -l human -s H -d 'Print sizes and dates in human readable format (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith image history' -l no-trunc -d "Don't truncate output"
 complete -c docker -n '__fish_docker_arguments_startswith image history' -l quiet -s q -d 'Only show image IDs'
@@ -962,7 +970,7 @@ complete -c docker -n '__fish_docker_arguments_startswith image import' -l platf
 # docker image inspect
 # Usage: docker image inspect [OPTIONS] IMAGE [IMAGE...]
 complete -c docker -n '__fish_docker_arguments_equals image' -fa inspect -d 'Display detailed information on one or more images'
-complete -c docker -n '__fish_docker_arguments_startswith image inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith image inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker image load
 # Usage: docker image load [OPTIONS]
@@ -976,7 +984,7 @@ complete -c docker -n '__fish_docker_arguments_equals image' -fa ls -d 'List ima
 complete -c docker -n '__fish_docker_arguments_startswith image ls' -l all -s a -d 'Show all images (default hides intermediate images)'
 complete -c docker -n '__fish_docker_arguments_startswith image ls' -l digests -d 'Show digests'
 complete -c docker -n '__fish_docker_arguments_startswith image ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith image ls' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith image ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith image ls' -l no-trunc -d "Don't truncate output"
 complete -c docker -n '__fish_docker_arguments_startswith image ls' -l quiet -s q -d 'Only show image IDs'
 
@@ -984,12 +992,12 @@ complete -c docker -n '__fish_docker_arguments_startswith image ls' -l quiet -s 
 # Usage: docker image prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals image' -fa prune -d 'Remove unused images'
 complete -c docker -n '__fish_docker_arguments_startswith image prune' -l all -s a -d 'Remove all unused images, not just dangling ones'
-complete -c docker -n '__fish_docker_arguments_startswith image prune' -l filter -r -d "Provide filter values (e.g. 'until=<timestamp>')"
+complete -c docker -n '__fish_docker_arguments_startswith image prune' -l filter -r -d 'Provide filter values (e.g. "until=<timestamp>")'
 complete -c docker -n '__fish_docker_arguments_startswith image prune' -l force -s f -d 'Do not prompt for confirmation'
 
 # docker image pull
 # Usage: docker image pull [OPTIONS] NAME[:TAG|@DIGEST]
-complete -c docker -n '__fish_docker_arguments_equals image' -fa pull -d 'Pull an image or a repository from a registry'
+complete -c docker -n '__fish_docker_arguments_equals image' -fa pull -d 'Download an image from a registry'
 complete -c docker -n '__fish_docker_arguments_startswith image pull' -l all-tags -s a -d 'Download all tagged images in the repository'
 complete -c docker -n '__fish_docker_arguments_startswith image pull' -l disable-content-trust -d 'Skip image verification (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith image pull' -l platform -r -d 'Set platform if server is multi-platform capable'
@@ -997,8 +1005,8 @@ complete -c docker -n '__fish_docker_arguments_startswith image pull' -l quiet -
 
 # docker image push
 # Usage: docker image push [OPTIONS] NAME[:TAG]
-complete -c docker -n '__fish_docker_arguments_equals image' -fa push -d 'Push an image or a repository to a registry'
-complete -c docker -n '__fish_docker_arguments_startswith image push' -l all-tags -s a -d 'Push all tagged images in the repository'
+complete -c docker -n '__fish_docker_arguments_equals image' -fa push -d 'Upload an image to a registry'
+complete -c docker -n '__fish_docker_arguments_startswith image push' -l all-tags -s a -d 'Push all tags of an image to the repository'
 complete -c docker -n '__fish_docker_arguments_startswith image push' -l disable-content-trust -d 'Skip image signing (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith image push' -l quiet -s q -d 'Suppress verbose output'
 
@@ -1023,7 +1031,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa images -d 'List imag
 complete -c docker -n '__fish_docker_arguments_startswith images' -l all -s a -d 'Show all images (default hides intermediate images)'
 complete -c docker -n '__fish_docker_arguments_startswith images' -l digests -d 'Show digests'
 complete -c docker -n '__fish_docker_arguments_startswith images' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith images' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith images' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith images' -l no-trunc -d "Don't truncate output"
 complete -c docker -n '__fish_docker_arguments_startswith images' -l quiet -s q -d 'Only show image IDs'
 
@@ -1042,14 +1050,14 @@ complete -c docker -n '__fish_docker_arguments_startswith info' -l format -s f -
 # docker inspect
 # Usage: docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa inspect -d 'Return low-level information on Docker objects'
-complete -c docker -n '__fish_docker_arguments_startswith inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith inspect' -l size -s s -d 'Display total file sizes if the type is container'
 complete -c docker -n '__fish_docker_arguments_startswith inspect' -l type -r -d 'Return JSON for specified type'
 
 # docker kill
 # Usage: docker kill [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa kill -d 'Kill one or more running containers'
-complete -c docker -n '__fish_docker_arguments_startswith kill' -l signal -s s -r -d 'Signal to send to the container (default "KILL")'
+complete -c docker -n '__fish_docker_arguments_startswith kill' -l signal -s s -r -d 'Signal to send to the container'
 
 # docker load
 # Usage: docker load [OPTIONS]
@@ -1059,24 +1067,24 @@ complete -c docker -n '__fish_docker_arguments_startswith load' -l quiet -s q -d
 
 # docker login
 # Usage: docker login [OPTIONS] [SERVER]
-complete -c docker -n '__fish_is_first_docker_argument' -fa login -d 'Log in to a Docker registry'
+complete -c docker -n '__fish_is_first_docker_argument' -fa login -d 'Log in to a registry'
 complete -c docker -n '__fish_docker_arguments_startswith login' -l password -s p -r -d 'Password'
 complete -c docker -n '__fish_docker_arguments_startswith login' -l password-stdin -d 'Take the password from stdin'
 complete -c docker -n '__fish_docker_arguments_startswith login' -l username -s u -r -d 'Username'
 
 # docker logout
 # Usage: docker logout [SERVER]
-complete -c docker -n '__fish_is_first_docker_argument' -fa logout -d 'Log out from a Docker registry'
+complete -c docker -n '__fish_is_first_docker_argument' -fa logout -d 'Log out from a registry'
 
 # docker logs
 # Usage: docker logs [OPTIONS] CONTAINER
 complete -c docker -n '__fish_is_first_docker_argument' -fa logs -d 'Fetch the logs of a container'
 complete -c docker -n '__fish_docker_arguments_startswith logs' -l details -d 'Show extra details provided to logs'
 complete -c docker -n '__fish_docker_arguments_startswith logs' -l follow -s f -d 'Follow log output'
-complete -c docker -n '__fish_docker_arguments_startswith logs' -l since -r -d 'Show logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)'
+complete -c docker -n '__fish_docker_arguments_startswith logs' -l since -r -d 'Show logs since timestamp (e.g. "2013-01-02T13:23:37Z") or relative (e.g. "42m" for 42 minutes)'
 complete -c docker -n '__fish_docker_arguments_startswith logs' -l tail -s n -r -d 'Number of lines to show from the end of the logs (default "all")'
 complete -c docker -n '__fish_docker_arguments_startswith logs' -l timestamps -s t -d 'Show timestamps'
-complete -c docker -n '__fish_docker_arguments_startswith logs' -l until -r -d 'Show logs before a timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)'
+complete -c docker -n '__fish_docker_arguments_startswith logs' -l until -r -d 'Show logs before a timestamp (e.g. "2013-01-02T13:23:37Z") or relative (e.g. "42m" for 42 minutes)'
 
 # docker manifest
 # Usage: docker manifest COMMAND
@@ -1122,8 +1130,8 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa network -d 'Manage n
 complete -c docker -n '__fish_docker_arguments_equals network' -fa connect -d 'Connect a container to a network'
 complete -c docker -n '__fish_docker_arguments_startswith network connect' -l alias -r -d 'Add network-scoped alias for the container'
 complete -c docker -n '__fish_docker_arguments_startswith network connect' -l driver-opt -r -d 'driver options for the network'
-complete -c docker -n '__fish_docker_arguments_startswith network connect' -l ip -r -d 'IPv4 address (e.g., 172.30.100.104)'
-complete -c docker -n '__fish_docker_arguments_startswith network connect' -l ip6 -r -d 'IPv6 address (e.g., 2001:db8::33)'
+complete -c docker -n '__fish_docker_arguments_startswith network connect' -l ip -r -d 'IPv4 address (e.g., "172.30.100.104")'
+complete -c docker -n '__fish_docker_arguments_startswith network connect' -l ip6 -r -d 'IPv6 address (e.g., "2001:db8::33")'
 complete -c docker -n '__fish_docker_arguments_startswith network connect' -l link -r -d 'Add link to another container'
 complete -c docker -n '__fish_docker_arguments_startswith network connect' -l link-local-ip -r -d 'Add a link-local address for the container'
 
@@ -1155,26 +1163,27 @@ complete -c docker -n '__fish_docker_arguments_startswith network disconnect' -l
 # docker network inspect
 # Usage: docker network inspect [OPTIONS] NETWORK [NETWORK...]
 complete -c docker -n '__fish_docker_arguments_equals network' -fa inspect -d 'Display detailed information on one or more networks'
-complete -c docker -n '__fish_docker_arguments_startswith network inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith network inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith network inspect' -l verbose -s v -d 'Verbose output for diagnostics'
 
 # docker network ls
 # Usage: docker network ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals network' -fa ls -d 'List networks'
-complete -c docker -n '__fish_docker_arguments_startswith network ls' -l filter -s f -r -d "Provide filter values (e.g. 'driver=bridge')"
-complete -c docker -n '__fish_docker_arguments_startswith network ls' -l format -r -d 'Pretty-print networks using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith network ls' -l filter -s f -r -d 'Provide filter values (e.g. "driver=bridge")'
+complete -c docker -n '__fish_docker_arguments_startswith network ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith network ls' -l no-trunc -d 'Do not truncate the output'
 complete -c docker -n '__fish_docker_arguments_startswith network ls' -l quiet -s q -d 'Only display network IDs'
 
 # docker network prune
 # Usage: docker network prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals network' -fa prune -d 'Remove all unused networks'
-complete -c docker -n '__fish_docker_arguments_startswith network prune' -l filter -r -d "Provide filter values (e.g. 'until=<timestamp>')"
+complete -c docker -n '__fish_docker_arguments_startswith network prune' -l filter -r -d 'Provide filter values (e.g. "until=<timestamp>")'
 complete -c docker -n '__fish_docker_arguments_startswith network prune' -l force -s f -d 'Do not prompt for confirmation'
 
 # docker network rm
 # Usage: docker network rm NETWORK [NETWORK...]
 complete -c docker -n '__fish_docker_arguments_equals network' -fa rm -d 'Remove one or more networks'
+complete -c docker -n '__fish_docker_arguments_startswith network rm' -l force -s f -d 'Do not error if the network does not exist'
 
 # docker node
 # Usage: docker node COMMAND
@@ -1187,14 +1196,14 @@ complete -c docker -n '__fish_docker_arguments_equals node' -fa demote -d 'Demot
 # docker node inspect
 # Usage: docker node inspect [OPTIONS] self|NODE [NODE...]
 complete -c docker -n '__fish_docker_arguments_equals node' -fa inspect -d 'Display detailed information on one or more nodes'
-complete -c docker -n '__fish_docker_arguments_startswith node inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith node inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith node inspect' -l pretty -d 'Print the information in a human friendly format'
 
 # docker node ls
 # Usage: docker node ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals node' -fa ls -d 'List nodes in the swarm'
 complete -c docker -n '__fish_docker_arguments_startswith node ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith node ls' -l format -r -d 'Pretty-print nodes using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith node ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith node ls' -l quiet -s q -d 'Only display IDs'
 
 # docker node promote
@@ -1218,10 +1227,10 @@ complete -c docker -n '__fish_docker_arguments_startswith node rm' -l force -s f
 # docker node update
 # Usage: docker node update [OPTIONS] NODE
 complete -c docker -n '__fish_docker_arguments_equals node' -fa update -d 'Update a node'
-complete -c docker -n '__fish_docker_arguments_startswith node update' -l availability -r -d 'Availability of the node ("active"|"pause"|"drain")'
-complete -c docker -n '__fish_docker_arguments_startswith node update' -l label-add -r -d 'Add or update a node label (key=value)'
+complete -c docker -n '__fish_docker_arguments_startswith node update' -l availability -r -d 'Availability of the node ("active", "pause", "drain")'
+complete -c docker -n '__fish_docker_arguments_startswith node update' -l label-add -r -d 'Add or update a node label ("key=value")'
 complete -c docker -n '__fish_docker_arguments_startswith node update' -l label-rm -r -d 'Remove a node label if exists'
-complete -c docker -n '__fish_docker_arguments_startswith node update' -l role -r -d 'Role of the node ("worker"|"manager")'
+complete -c docker -n '__fish_docker_arguments_startswith node update' -l role -r -d 'Role of the node ("worker", "manager")'
 
 # docker pause
 # Usage: docker pause CONTAINER [CONTAINER...]
@@ -1249,7 +1258,7 @@ complete -c docker -n '__fish_docker_arguments_startswith plugin enable' -l time
 # docker plugin inspect
 # Usage: docker plugin inspect [OPTIONS] PLUGIN [PLUGIN...]
 complete -c docker -n '__fish_docker_arguments_equals plugin' -fa inspect -d 'Display detailed information on one or more plugins'
-complete -c docker -n '__fish_docker_arguments_startswith plugin inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith plugin inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker plugin install
 # Usage: docker plugin install [OPTIONS] PLUGIN [KEY=VALUE...]
@@ -1262,8 +1271,8 @@ complete -c docker -n '__fish_docker_arguments_startswith plugin install' -l gra
 # docker plugin ls
 # Usage: docker plugin ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals plugin' -fa ls -d 'List plugins'
-complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l filter -s f -r -d "Provide filter values (e.g. 'enabled=true')"
-complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l format -r -d 'Pretty-print plugins using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l filter -s f -r -d 'Provide filter values (e.g. "enabled=true")'
+complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l no-trunc -d "Don't truncate output"
 complete -c docker -n '__fish_docker_arguments_startswith plugin ls' -l quiet -s q -d 'Only display plugin IDs'
 
@@ -1297,7 +1306,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa port -d 'List port m
 complete -c docker -n '__fish_is_first_docker_argument' -fa ps -d 'List containers'
 complete -c docker -n '__fish_docker_arguments_startswith ps' -l all -s a -d 'Show all containers (default shows just running)'
 complete -c docker -n '__fish_docker_arguments_startswith ps' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith ps' -l format -r -d 'Pretty-print containers using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith ps' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith ps' -l last -s n -r -d 'Show n last created containers (includes all states) (default -1)'
 complete -c docker -n '__fish_docker_arguments_startswith ps' -l latest -s l -d 'Show the latest created container (includes all states)'
 complete -c docker -n '__fish_docker_arguments_startswith ps' -l no-trunc -d "Don't truncate output"
@@ -1306,7 +1315,7 @@ complete -c docker -n '__fish_docker_arguments_startswith ps' -l size -s s -d 'D
 
 # docker pull
 # Usage: docker pull [OPTIONS] NAME[:TAG|@DIGEST]
-complete -c docker -n '__fish_is_first_docker_argument' -fa pull -d 'Pull an image or a repository from a registry'
+complete -c docker -n '__fish_is_first_docker_argument' -fa pull -d 'Download an image from a registry'
 complete -c docker -n '__fish_docker_arguments_startswith pull' -l all-tags -s a -d 'Download all tagged images in the repository'
 complete -c docker -n '__fish_docker_arguments_startswith pull' -l disable-content-trust -d 'Skip image verification (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith pull' -l platform -r -d 'Set platform if server is multi-platform capable'
@@ -1314,8 +1323,8 @@ complete -c docker -n '__fish_docker_arguments_startswith pull' -l quiet -s q -d
 
 # docker push
 # Usage: docker push [OPTIONS] NAME[:TAG]
-complete -c docker -n '__fish_is_first_docker_argument' -fa push -d 'Push an image or a repository to a registry'
-complete -c docker -n '__fish_docker_arguments_startswith push' -l all-tags -s a -d 'Push all tagged images in the repository'
+complete -c docker -n '__fish_is_first_docker_argument' -fa push -d 'Upload an image to a registry'
+complete -c docker -n '__fish_docker_arguments_startswith push' -l all-tags -s a -d 'Push all tags of an image to the repository'
 complete -c docker -n '__fish_docker_arguments_startswith push' -l disable-content-trust -d 'Skip image signing (default true)'
 complete -c docker -n '__fish_docker_arguments_startswith push' -l quiet -s q -d 'Suppress verbose output'
 
@@ -1326,7 +1335,8 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa rename -d 'Rename a 
 # docker restart
 # Usage: docker restart [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa restart -d 'Restart one or more containers'
-complete -c docker -n '__fish_docker_arguments_startswith restart' -l time -s t -r -d 'Seconds to wait for stop before killing the container (default 10)'
+complete -c docker -n '__fish_docker_arguments_startswith restart' -l signal -s s -r -d 'Signal to send to the container'
+complete -c docker -n '__fish_docker_arguments_startswith restart' -l time -s t -r -d 'Seconds to wait before killing the container'
 
 # docker rm
 # Usage: docker rm [OPTIONS] CONTAINER [CONTAINER...]
@@ -1343,7 +1353,7 @@ complete -c docker -n '__fish_docker_arguments_startswith rmi' -l no-prune -d 'D
 
 # docker run
 # Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-complete -c docker -n '__fish_is_first_docker_argument' -fa run -d 'Run a command in a new container'
+complete -c docker -n '__fish_is_first_docker_argument' -fa run -d 'Create and run a new container from an image'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
@@ -1418,7 +1428,8 @@ complete -c docker -n '__fish_docker_arguments_startswith run' -l platform -r -d
 complete -c docker -n '__fish_docker_arguments_startswith run' -l privileged -d 'Give extended privileges to this container'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l publish -s p -r -d "Publish a container's port(s) to the host"
 complete -c docker -n '__fish_docker_arguments_startswith run' -l publish-all -s P -d 'Publish all exposed ports to random ports'
-complete -c docker -n '__fish_docker_arguments_startswith run' -l pull -r -d 'Pull image before running ("always"|"missing"|"never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith run' -l pull -r -d 'Pull image before running ("always", "missing", "never") (default "missing")'
+complete -c docker -n '__fish_docker_arguments_startswith run' -l quiet -s q -d 'Suppress the pull output'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l read-only -d "Mount the container's root filesystem as read only"
 complete -c docker -n '__fish_docker_arguments_startswith run' -l restart -r -d 'Restart policy to apply when a container exits (default "no")'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l rm -d 'Automatically remove the container when it exits'
@@ -1426,7 +1437,7 @@ complete -c docker -n '__fish_docker_arguments_startswith run' -l runtime -r -d 
 complete -c docker -n '__fish_docker_arguments_startswith run' -l security-opt -r -d 'Security Options'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l shm-size -r -d 'Size of /dev/shm'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l sig-proxy -d 'Proxy received signals to the process (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith run' -l stop-signal -r -d 'Signal to stop a container (default "SIGTERM")'
+complete -c docker -n '__fish_docker_arguments_startswith run' -l stop-signal -r -d 'Signal to stop the container'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l stop-timeout -r -d 'Timeout (in seconds) to stop a container'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l storage-opt -r -d 'Storage driver options for the container'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l sysctl -r -d 'Sysctl options (default map[])'
@@ -1448,15 +1459,15 @@ complete -c docker -n '__fish_docker_arguments_startswith save' -l output -s o -
 
 # docker search
 # Usage: docker search [OPTIONS] TERM
-complete -c docker -n '__fish_is_first_docker_argument' -fa search -d 'Search the Docker Hub for images'
+complete -c docker -n '__fish_is_first_docker_argument' -fa search -d 'Search Docker Hub for images'
 complete -c docker -n '__fish_docker_arguments_startswith search' -l filter -s f -r -d 'Filter output based on conditions provided'
 complete -c docker -n '__fish_docker_arguments_startswith search' -l format -r -d 'Pretty-print search using a Go template'
-complete -c docker -n '__fish_docker_arguments_startswith search' -l limit -r -d 'Max number of search results (default 25)'
+complete -c docker -n '__fish_docker_arguments_startswith search' -l limit -r -d 'Max number of search results'
 complete -c docker -n '__fish_docker_arguments_startswith search' -l no-trunc -d "Don't truncate output"
 
 # docker secret
 # Usage: docker secret COMMAND
-complete -c docker -n '__fish_is_first_docker_argument' -fa secret -d 'Manage Docker secrets'
+complete -c docker -n '__fish_is_first_docker_argument' -fa secret -d 'Manage Swarm secrets'
 
 # docker secret create
 # Usage: docker secret create [OPTIONS] SECRET [file|-]
@@ -1468,14 +1479,14 @@ complete -c docker -n '__fish_docker_arguments_startswith secret create' -l temp
 # docker secret inspect
 # Usage: docker secret inspect [OPTIONS] SECRET [SECRET...]
 complete -c docker -n '__fish_docker_arguments_equals secret' -fa inspect -d 'Display detailed information on one or more secrets'
-complete -c docker -n '__fish_docker_arguments_startswith secret inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith secret inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith secret inspect' -l pretty -d 'Print the information in a human friendly format'
 
 # docker secret ls
 # Usage: docker secret ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals secret' -fa ls -d 'List secrets'
 complete -c docker -n '__fish_docker_arguments_startswith secret ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith secret ls' -l format -r -d 'Pretty-print secrets using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith secret ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith secret ls' -l quiet -s q -d 'Only display IDs'
 
 # docker secret rm
@@ -1484,7 +1495,7 @@ complete -c docker -n '__fish_docker_arguments_equals secret' -fa rm -d 'Remove 
 
 # docker service
 # Usage: docker service COMMAND
-complete -c docker -n '__fish_is_first_docker_argument' -fa service -d 'Manage services'
+complete -c docker -n '__fish_is_first_docker_argument' -fa service -d 'Manage Swarm services'
 
 # docker service create
 # Usage: docker service create [OPTIONS] IMAGE [COMMAND] [ARG...]
@@ -1521,7 +1532,7 @@ complete -c docker -n '__fish_docker_arguments_startswith service create' -l lim
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l log-driver -r -d 'Logging driver for service'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l log-opt -r -d 'Logging driver options'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l max-concurrent -r -d 'Number of job tasks to run concurrently (default equal to --replicas)'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l mode -r -d 'Service mode (replicated, global, replicated-job, or global-job) (default "replicated")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l mode -r -d 'Service mode ("replicated", "global", "replicated-job", "global-job") (default "replicated")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l mount -r -d 'Attach a filesystem mount to the service'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l name -r -d 'Service name'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l network -r -d 'Network attachments'
@@ -1535,15 +1546,15 @@ complete -c docker -n '__fish_docker_arguments_startswith service create' -l rep
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l replicas-max-per-node -r -d 'Maximum number of tasks per node (default 0 = unlimited)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l reserve-cpu -r -d 'Reserve CPUs'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l reserve-memory -r -d 'Reserve Memory'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l restart-condition -r -d 'Restart when condition is met ("none"|"on-failure"|"any") (default "any")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l restart-condition -r -d 'Restart when condition is met ("none", "on-failure", "any") (default "any")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l restart-delay -r -d 'Delay between restart attempts (ns|us|ms|s|m|h) (default 5s)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l restart-max-attempts -r -d 'Maximum number of restarts before giving up'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l restart-window -r -d 'Window used to evaluate the restart policy (ns|us|ms|s|m|h)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-delay -r -d 'Delay between task rollbacks (ns|us|ms|s|m|h) (default 0s)'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-failure-action -r -d 'Action on rollback failure ("pause"|"continue") (default "pause")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-failure-action -r -d 'Action on rollback failure ("pause", "continue") (default "pause")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-max-failure-ratio -r -d 'Failure rate to tolerate during a rollback (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-monitor -r -d 'Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h) (default 5s)'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-order -r -d 'Rollback order ("start-first"|"stop-first") (default "stop-first")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-order -r -d 'Rollback order ("start-first", "stop-first") (default "stop-first")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l rollback-parallelism -r -d 'Maximum number of tasks rolled back simultaneously (0 to roll back all at once) (default 1)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l secret -r -d 'Specify secrets to expose to the service'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l stop-grace-period -r -d 'Time to wait before force killing a container (ns|us|ms|s|m|h) (default 10s)'
@@ -1552,10 +1563,10 @@ complete -c docker -n '__fish_docker_arguments_startswith service create' -l sys
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l tty -s t -d 'Allocate a pseudo-TTY'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l ulimit -r -d 'Ulimit options (default [])'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-delay -r -d 'Delay between updates (ns|us|ms|s|m|h) (default 0s)'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-failure-action -r -d 'Action on update failure ("pause"|"continue"|"rollback") (default "pause")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-failure-action -r -d 'Action on update failure ("pause", "continue", "rollback") (default "pause")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-max-failure-ratio -r -d 'Failure rate to tolerate during an update (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-monitor -r -d 'Duration after each task update to monitor for failure (ns|us|ms|s|m|h) (default 5s)'
-complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-order -r -d 'Update order ("start-first"|"stop-first") (default "stop-first")'
+complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-order -r -d 'Update order ("start-first", "stop-first") (default "stop-first")'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l update-parallelism -r -d 'Maximum number of tasks updated simultaneously (0 to update all at once) (default 1)'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l user -s u -r -d 'Username or UID (format: <name|uid>[:<group|gid>])'
 complete -c docker -n '__fish_docker_arguments_startswith service create' -l with-registry-auth -d 'Send registry authentication details to swarm agents'
@@ -1564,7 +1575,7 @@ complete -c docker -n '__fish_docker_arguments_startswith service create' -l wor
 # docker service inspect
 # Usage: docker service inspect [OPTIONS] SERVICE [SERVICE...]
 complete -c docker -n '__fish_docker_arguments_equals service' -fa inspect -d 'Display detailed information on one or more services'
-complete -c docker -n '__fish_docker_arguments_startswith service inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith service inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith service inspect' -l pretty -d 'Print the information in a human friendly format'
 
 # docker service logs
@@ -1576,7 +1587,7 @@ complete -c docker -n '__fish_docker_arguments_startswith service logs' -l no-re
 complete -c docker -n '__fish_docker_arguments_startswith service logs' -l no-task-ids -d 'Do not include task IDs in output'
 complete -c docker -n '__fish_docker_arguments_startswith service logs' -l no-trunc -d 'Do not truncate output'
 complete -c docker -n '__fish_docker_arguments_startswith service logs' -l raw -d 'Do not neatly format logs'
-complete -c docker -n '__fish_docker_arguments_startswith service logs' -l since -r -d 'Show logs since timestamp (e.g. 2013-01-02T13:23:37Z) or relative (e.g. 42m for 42 minutes)'
+complete -c docker -n '__fish_docker_arguments_startswith service logs' -l since -r -d 'Show logs since timestamp (e.g. "2013-01-02T13:23:37Z") or relative (e.g. "42m" for 42 minutes)'
 complete -c docker -n '__fish_docker_arguments_startswith service logs' -l tail -s n -r -d 'Number of lines to show from the end of the logs (default "all")'
 complete -c docker -n '__fish_docker_arguments_startswith service logs' -l timestamps -s t -d 'Show timestamps'
 
@@ -1584,7 +1595,7 @@ complete -c docker -n '__fish_docker_arguments_startswith service logs' -l times
 # Usage: docker service ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals service' -fa ls -d 'List services'
 complete -c docker -n '__fish_docker_arguments_startswith service ls' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith service ls' -l format -r -d 'Pretty-print services using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith service ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith service ls' -l quiet -s q -d 'Only display IDs'
 
 # docker service ps
@@ -1645,8 +1656,8 @@ complete -c docker -n '__fish_docker_arguments_startswith service update' -l hea
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l health-retries -r -d 'Consecutive failures needed to report unhealthy'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l health-start-period -r -d 'Start period for the container to initialize before counting retries towards unstable (ms|s|m|h)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l health-timeout -r -d 'Maximum time to allow one check to run (ms|s|m|h)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l host-add -r -d 'Add a custom host-to-IP mapping (host:ip)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l host-rm -r -d 'Remove a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l host-add -r -d 'Add a custom host-to-IP mapping ("host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l host-rm -r -d 'Remove a custom host-to-IP mapping ("host:ip")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l hostname -r -d 'Container hostname'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l image -r -d 'Service image tag'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l init -d 'Use an init inside each service container to forward signals and reap processes'
@@ -1675,16 +1686,16 @@ complete -c docker -n '__fish_docker_arguments_startswith service update' -l rep
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l replicas-max-per-node -r -d 'Maximum number of tasks per node (default 0 = unlimited)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l reserve-cpu -r -d 'Reserve CPUs'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l reserve-memory -r -d 'Reserve Memory'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l restart-condition -r -d 'Restart when condition is met ("none"|"on-failure"|"any")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l restart-condition -r -d 'Restart when condition is met ("none", "on-failure", "any")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l restart-delay -r -d 'Delay between restart attempts (ns|us|ms|s|m|h)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l restart-max-attempts -r -d 'Maximum number of restarts before giving up'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l restart-window -r -d 'Window used to evaluate the restart policy (ns|us|ms|s|m|h)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback -d 'Rollback to previous specification'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-delay -r -d 'Delay between task rollbacks (ns|us|ms|s|m|h)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-failure-action -r -d 'Action on rollback failure ("pause"|"continue")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-failure-action -r -d 'Action on rollback failure ("pause", "continue")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-max-failure-ratio -r -d 'Failure rate to tolerate during a rollback'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-monitor -r -d 'Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-order -r -d 'Rollback order ("start-first"|"stop-first")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-order -r -d 'Rollback order ("start-first", "stop-first")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l rollback-parallelism -r -d 'Maximum number of tasks rolled back simultaneously (0 to roll back all at once)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l secret-add -r -d 'Add or update a secret on a service'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l secret-rm -r -d 'Remove a secret'
@@ -1696,56 +1707,56 @@ complete -c docker -n '__fish_docker_arguments_startswith service update' -l tty
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l ulimit-add -r -d 'Add or update a ulimit option (default [])'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l ulimit-rm -r -d 'Remove a ulimit option'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-delay -r -d 'Delay between updates (ns|us|ms|s|m|h)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-failure-action -r -d 'Action on update failure ("pause"|"continue"|"rollback")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-failure-action -r -d 'Action on update failure ("pause", "continue", "rollback")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-max-failure-ratio -r -d 'Failure rate to tolerate during an update'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-monitor -r -d 'Duration after each task update to monitor for failure (ns|us|ms|s|m|h)'
-complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-order -r -d 'Update order ("start-first"|"stop-first")'
+complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-order -r -d 'Update order ("start-first", "stop-first")'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l update-parallelism -r -d 'Maximum number of tasks updated simultaneously (0 to update all at once)'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l user -s u -r -d 'Username or UID (format: <name|uid>[:<group|gid>])'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l with-registry-auth -d 'Send registry authentication details to swarm agents'
 complete -c docker -n '__fish_docker_arguments_startswith service update' -l workdir -s w -r -d 'Working directory inside the container'
 
 # docker stack
-# Usage: docker stack [OPTIONS] COMMAND
-complete -c docker -n '__fish_is_first_docker_argument' -fa stack -d 'Manage Docker stacks'
-complete -c docker -n '__fish_docker_arguments_startswith stack' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
+# Usage: docker stack COMMAND
+complete -c docker -n '__fish_is_first_docker_argument' -fa stack -d 'Manage Swarm stacks'
+
+# docker stack config
+# Usage: docker stack config [OPTIONS]
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa config -d 'Outputs the final config file, after doing merges and interpolations'
+complete -c docker -n '__fish_docker_arguments_startswith stack config' -l compose-file -s c -r -d 'Path to a Compose file, or "-" to read from stdin'
+complete -c docker -n '__fish_docker_arguments_startswith stack config' -l skip-interpolation -d 'Skip interpolation and output only merged config'
 
 # docker stack deploy
 # Usage: docker stack deploy [OPTIONS] STACK
-complete -c docker -n '__fish_docker_arguments_startswith stack' -fa deploy -d 'Deploy a new stack or update an existing stack'
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa deploy -d 'Deploy a new stack or update an existing stack'
 complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l compose-file -s c -r -d 'Path to a Compose file, or "-" to read from stdin'
-complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
 complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l prune -d 'Prune services that are no longer referenced'
-complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l resolve-image -r -d 'Query the registry to resolve image digest and supported platforms ("always"|"changed"|"never") (default "always")'
+complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l resolve-image -r -d 'Query the registry to resolve image digest and supported platforms ("always", "changed", "never") (default "always")'
 complete -c docker -n '__fish_docker_arguments_startswith stack deploy' -l with-registry-auth -d 'Send registry authentication details to Swarm agents'
 
 # docker stack ls
 # Usage: docker stack ls [OPTIONS]
-complete -c docker -n '__fish_docker_arguments_startswith stack' -fa ls -d 'List stacks'
-complete -c docker -n '__fish_docker_arguments_startswith stack ls' -l format -r -d 'Pretty-print stacks using a Go template'
-complete -c docker -n '__fish_docker_arguments_startswith stack ls' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa ls -d 'List stacks'
+complete -c docker -n '__fish_docker_arguments_startswith stack ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker stack ps
 # Usage: docker stack ps [OPTIONS] STACK
-complete -c docker -n '__fish_docker_arguments_startswith stack' -fa ps -d 'List the tasks in the stack'
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa ps -d 'List the tasks in the stack'
 complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l format -r -d 'Pretty-print tasks using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l no-resolve -d 'Do not map IDs to Names'
 complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l no-trunc -d 'Do not truncate output'
-complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
 complete -c docker -n '__fish_docker_arguments_startswith stack ps' -l quiet -s q -d 'Only display task IDs'
 
 # docker stack rm
 # Usage: docker stack rm [OPTIONS] STACK [STACK...]
-complete -c docker -n '__fish_docker_arguments_startswith stack' -fa rm -d 'Remove one or more stacks'
-complete -c docker -n '__fish_docker_arguments_startswith stack rm' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa rm -d 'Remove one or more stacks'
 
 # docker stack services
 # Usage: docker stack services [OPTIONS] STACK
-complete -c docker -n '__fish_docker_arguments_startswith stack' -fa services -d 'List the services in the stack'
+complete -c docker -n '__fish_docker_arguments_equals stack' -fa services -d 'List the services in the stack'
 complete -c docker -n '__fish_docker_arguments_startswith stack services' -l filter -s f -r -d 'Filter output based on conditions provided'
-complete -c docker -n '__fish_docker_arguments_startswith stack services' -l format -r -d 'Pretty-print services using a Go template'
-complete -c docker -n '__fish_docker_arguments_startswith stack services' -l orchestrator -r -d 'Orchestrator to use (swarm|kubernetes|all)'
+complete -c docker -n '__fish_docker_arguments_startswith stack services' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith stack services' -l quiet -s q -d 'Only display IDs'
 
 # docker start
@@ -1759,14 +1770,15 @@ complete -c docker -n '__fish_docker_arguments_startswith start' -l interactive 
 # Usage: docker stats [OPTIONS] [CONTAINER...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa stats -d 'Display a live stream of container(s) resource usage statistics'
 complete -c docker -n '__fish_docker_arguments_startswith stats' -l all -s a -d 'Show all containers (default shows just running)'
-complete -c docker -n '__fish_docker_arguments_startswith stats' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith stats' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith stats' -l no-stream -d 'Disable streaming stats and only pull the first result'
 complete -c docker -n '__fish_docker_arguments_startswith stats' -l no-trunc -d 'Do not truncate output'
 
 # docker stop
 # Usage: docker stop [OPTIONS] CONTAINER [CONTAINER...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa stop -d 'Stop one or more running containers'
-complete -c docker -n '__fish_docker_arguments_startswith stop' -l time -s t -r -d 'Seconds to wait for stop before killing it (default 10)'
+complete -c docker -n '__fish_docker_arguments_startswith stop' -l signal -s s -r -d 'Signal to send to the container'
+complete -c docker -n '__fish_docker_arguments_startswith stop' -l time -s t -r -d 'Seconds to wait before killing the container'
 
 # docker swarm
 # Usage: docker swarm COMMAND
@@ -1786,18 +1798,18 @@ complete -c docker -n '__fish_docker_arguments_startswith swarm ca' -l rotate -d
 # docker swarm init
 # Usage: docker swarm init [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals swarm' -fa init -d 'Initialize a swarm'
-complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l advertise-addr -r -d 'Advertised address (format: <ip|interface>[:port])'
+complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l advertise-addr -r -d 'Advertised address (format: "<ip|interface>[:port]")'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l autolock -d 'Enable manager autolocking (requiring an unlock key to start a stopped manager)'
-complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l availability -r -d 'Availability of the node ("active"|"pause"|"drain") (default "active")'
+complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l availability -r -d 'Availability of the node ("active", "pause", "drain") (default "active")'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l cert-expiry -r -d 'Validity period for node certificates (ns|us|ms|s|m|h) (default 2160h0m0s)'
-complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l data-path-addr -r -d 'Address or interface to use for data path traffic (format: <ip|interface>)'
+complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l data-path-addr -r -d 'Address or interface to use for data path traffic (format: "<ip|interface>")'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l data-path-port -r -d 'Port number to use for data path traffic (1024 - 49151). If no value is set or is set to 0, the default port (4789) is used.'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l default-addr-pool -r -d 'default address pool in CIDR format (default [])'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l default-addr-pool-mask-length -r -d 'default address pool subnet mask length (default 24)'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l dispatcher-heartbeat -r -d 'Dispatcher heartbeat period (ns|us|ms|s|m|h) (default 5s)'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l external-ca -r -d 'Specifications of one or more certificate signing endpoints'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l force-new-cluster -d 'Force create a new cluster from current state'
-complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l listen-addr -r -d 'Listen address (format: <ip|interface>[:port]) (default 0.0.0.0:2377)'
+complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l listen-addr -r -d 'Listen address (format: "<ip|interface>[:port]") (default 0.0.0.0:2377)'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l max-snapshots -r -d 'Number of additional Raft snapshots to retain'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l snapshot-interval -r -d 'Number of log entries between Raft snapshots (default 10000)'
 complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l task-history-limit -r -d 'Task history retention limit (default 5)'
@@ -1805,10 +1817,10 @@ complete -c docker -n '__fish_docker_arguments_startswith swarm init' -l task-hi
 # docker swarm join
 # Usage: docker swarm join [OPTIONS] HOST:PORT
 complete -c docker -n '__fish_docker_arguments_equals swarm' -fa join -d 'Join a swarm as a node and/or manager'
-complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l advertise-addr -r -d 'Advertised address (format: <ip|interface>[:port])'
-complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l availability -r -d 'Availability of the node ("active"|"pause"|"drain") (default "active")'
-complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l data-path-addr -r -d 'Address or interface to use for data path traffic (format: <ip|interface>)'
-complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l listen-addr -r -d 'Listen address (format: <ip|interface>[:port]) (default 0.0.0.0:2377)'
+complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l advertise-addr -r -d 'Advertised address (format: "<ip|interface>[:port]")'
+complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l availability -r -d 'Availability of the node ("active", "pause", "drain") (default "active")'
+complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l data-path-addr -r -d 'Address or interface to use for data path traffic (format: "<ip|interface>")'
+complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l listen-addr -r -d 'Listen address (format: "<ip|interface>[:port]") (default 0.0.0.0:2377)'
 complete -c docker -n '__fish_docker_arguments_startswith swarm join' -l token -r -d 'Token for entry into the swarm'
 
 # docker swarm join-token
@@ -1850,7 +1862,7 @@ complete -c docker -n '__fish_is_first_docker_argument' -fa system -d 'Manage Do
 # docker system df
 # Usage: docker system df [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals system' -fa df -d 'Show docker disk usage'
-complete -c docker -n '__fish_docker_arguments_startswith system df' -l format -r -d 'Pretty-print images using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith system df' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith system df' -l verbose -s v -d 'Show detailed information on space usage'
 
 # docker system events
@@ -1870,7 +1882,7 @@ complete -c docker -n '__fish_docker_arguments_startswith system info' -l format
 # Usage: docker system prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals system' -fa prune -d 'Remove unused data'
 complete -c docker -n '__fish_docker_arguments_startswith system prune' -l all -s a -d 'Remove all unused images not just dangling ones'
-complete -c docker -n '__fish_docker_arguments_startswith system prune' -l filter -r -d "Provide filter values (e.g. 'label=<key>=<value>')"
+complete -c docker -n '__fish_docker_arguments_startswith system prune' -l filter -r -d 'Provide filter values (e.g. "label=<key>=<value>")'
 complete -c docker -n '__fish_docker_arguments_startswith system prune' -l force -s f -d 'Do not prompt for confirmation'
 complete -c docker -n '__fish_docker_arguments_startswith system prune' -l volumes -d 'Prune volumes'
 
@@ -1945,10 +1957,9 @@ complete -c docker -n '__fish_docker_arguments_startswith update' -l cpu-shares 
 complete -c docker -n '__fish_docker_arguments_startswith update' -l cpus -r -d 'Number of CPUs'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith update' -l kernel-memory -r -d 'Kernel memory limit'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l memory -s m -r -d 'Memory limit'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l memory-reservation -r -d 'Memory soft limit'
-complete -c docker -n '__fish_docker_arguments_startswith update' -l memory-swap -r -d "Swap limit equal to memory plus swap: '-1' to enable unlimited swap"
+complete -c docker -n '__fish_docker_arguments_startswith update' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l pids-limit -r -d 'Tune container pids limit (set -1 for unlimited)'
 complete -c docker -n '__fish_docker_arguments_startswith update' -l restart -r -d 'Restart policy to apply when a container exits'
 
@@ -1956,7 +1967,6 @@ complete -c docker -n '__fish_docker_arguments_startswith update' -l restart -r 
 # Usage: docker version [OPTIONS]
 complete -c docker -n '__fish_is_first_docker_argument' -fa version -d 'Show the Docker version information'
 complete -c docker -n '__fish_docker_arguments_startswith version' -l format -s f -r -d 'Format the output using the given Go template'
-complete -c docker -n '__fish_docker_arguments_startswith version' -l kubeconfig -r -d 'Kubernetes config file'
 
 # docker volume
 # Usage: docker volume COMMAND
@@ -1972,19 +1982,19 @@ complete -c docker -n '__fish_docker_arguments_startswith volume create' -l opt 
 # docker volume inspect
 # Usage: docker volume inspect [OPTIONS] VOLUME [VOLUME...]
 complete -c docker -n '__fish_docker_arguments_equals volume' -fa inspect -d 'Display detailed information on one or more volumes'
-complete -c docker -n '__fish_docker_arguments_startswith volume inspect' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith volume inspect' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker volume ls
 # Usage: docker volume ls [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals volume' -fa ls -d 'List volumes'
-complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l filter -s f -r -d "Provide filter values (e.g. 'dangling=true')"
-complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l format -r -d 'Pretty-print volumes using a Go template'
+complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l filter -s f -r -d 'Provide filter values (e.g. "dangling=true")'
+complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l format -r -d "Format output using a custom template: 'table':            Print output in table format with column headers (default) 'table TEMPLATE':   Print output in table format using the given Go template 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l quiet -s q -d 'Only display volume names'
 
 # docker volume prune
 # Usage: docker volume prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals volume' -fa prune -d 'Remove all unused local volumes'
-complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l filter -r -d "Provide filter values (e.g. 'label=<label>')"
+complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l filter -r -d 'Provide filter values (e.g. "label=<label>")'
 complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l force -s f -d 'Do not prompt for confirmation'
 
 # docker volume rm
