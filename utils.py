@@ -16,12 +16,13 @@ re_commands = re.compile(r"Commands:(.*?)(?:\n\n|\Z)", flags=re.DOTALL | re.MULT
 re_command = re.compile(r"(?P<name>[-\w]+\*?)\s{2,}(?P<description>.*)")
 
 
-def get_command_output(command: str) -> str:
+def get_command_output(command: str, env: Dict = None) -> str:
     result = subprocess.run(
         command,
         shell=True,
         encoding="utf-8",
-        capture_output=True
+        capture_output=True,
+        env=env
     )
     return result.stdout
 
@@ -139,11 +140,11 @@ def convert_subcommand(option: Dict) -> str:
     return " ".join(line)
 
 
-def parse_command_info(command: str) -> Dict:
+def parse_command_info(command: str, env: Dict = None) -> Dict:
     """
     Parse command help information to a dictionary
     """
-    output = get_command_output(f"{command} --help")
+    output = get_command_output(command, env)
 
     result = {}
 

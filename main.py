@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import argparse
+import re
+from pathlib import Path
 from typing import Dict
 
 import utils
@@ -9,11 +11,19 @@ def process_command(params: Dict):
     executable = params["executable"]
     executable_id = executable.replace("-", "_")
     arguments = " ".join(params["arguments"])
+
     command = (executable + " " + arguments).strip()
+    if "--help" not in command:
+        command = f"{command} --help"
 
-    parsed_info = utils.parse_command_info(command)
+    parsed_info = utils.parse_command_info(command, params.get("env"))
 
-    yield f"# {command}"
+    cleaned_command = " ".join([
+        part
+        for part in re.split(r"\s+", command)
+        if not part.startswith("-")
+    ])
+    yield f"# {cleaned_command}"
 
     if "usage" in parsed_info:
         yield f"# Usage: {parsed_info['usage']}"
@@ -63,24 +73,39 @@ def process_command(params: Dict):
                         subcommand_data["name"],
                         utils.convert_subcommand(subcommand_data)
                     )
-                ]
+                ],
+                "env": params["env"]
             })
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("command")
+    parser = argparse.ArgumentParser(
+        usage="\n"
+              "  python3 main.py -- docker > completions/docker.fish"
+              "  python3 main.py -- docker-compose > completions/docker-compose.fish"
+    )
+    parser.add_argument("command", type=str, nargs="+", default="docker")
+    parser.add_argument("--buildkit", action="store_true")
     options = parser.parse_args()
 
     params = {
-        "executable": options.command,
+        "executable": " ".join(options.command),
         "arguments": [],
         "prefix_first": "complete -c {executable} -n '__fish_is_first_{executable_id}_argument'",
         "prefix_subcommand_startswith": "complete -c {executable} -n '__fish_{executable_id}_arguments_startswith {arguments}'",
         "prefix_subcommand_equals": "complete -c {executable} -n '__fish_{executable_id}_arguments_equals {arguments}'",
         "level": 0,
-        "injections": []
+        "injections": [],
+        "env": {
+            "DOCKER_BUILDKIT": str(int(options.buildkit))
+        }
     }
+
+    # Output function definitions
+    if len(options.command) == 1:
+        prefix_file = Path("./prefix") / f"{options.command[0]}.fish"
+        if prefix_file.exists():
+            print(prefix_file.read_text())
 
     for line in process_command(params):
         print(line)
