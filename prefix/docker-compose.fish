@@ -1,58 +1,63 @@
 function __fish_get_docker_compose_arguments
-    set -e argv[1]
-    argparse -s --name=docker-compose \
-        'f/file=' \
-        'p/project-name=' \
-        'profile=' \
-        'c/context=' \
-        'verbose' \
-        'log-level=' \
-        'ansi=' \
-        'no-ansi' \
-        'v/version' \
-        'H/host=' \
-        'tls' \
-        'tlscacert=' \
-        'tlscert=' \
-        'tlskey=' \
-        'tlsverify' \
-        'skip-hostname-check' \
-        'project-directory=' \
-        'compatibility' \
-        'env-file=' \
-        -- $argv &> /dev/null
-        or return 1
-    echo $argv
+  set cmd (commandline -poc)
+  set -e cmd[1]
+
+  argparse -s --name=docker-compose \
+    'f/file=' \
+    'p/project-name=' \
+    'profile=' \
+    'c/context=' \
+    'verbose' \
+    'log-level=' \
+    'ansi=' \
+    'no-ansi' \
+    'v/version' \
+    'H/host=' \
+    'tls' \
+    'tlscacert=' \
+    'tlscert=' \
+    'tlskey=' \
+    'tlsverify' \
+    'skip-hostname-check' \
+    'project-directory=' \
+    'compatibility' \
+    'env-file=' \
+    -- $cmd &> /dev/null
+    or return 1
+
+  for arg in $argv
+    echo $arg
+  end
 end
 
 
 function __fish_is_first_docker_compose_argument
-    set -l cmd (__fish_get_docker_compose_arguments (commandline -poc) | tr ' ' \n)
-    set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $cmd)
-    test (count $tokens) -eq "0"
+  set -l args (__fish_get_docker_compose_arguments)
+  set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $args)
+  test (count $tokens) -eq "0"
 end
 
 
 function __fish_docker_compose_arguments_startswith
-    set -l cmd (__fish_get_docker_compose_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\b.*" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_compose_arguments)
+  if string match -qr -- "^$argv\b.*" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_docker_compose_arguments_equals
-    set -l cmd (__fish_get_docker_compose_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\$" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_compose_arguments)
+  if string match -qr -- "^$argv\$" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_print_docker_compose_services --description 'Print a list of docker compose services'
-    docker-compose config --services 2> /dev/null
+  docker-compose config --services 2> /dev/null
 end
 
 

@@ -1,80 +1,85 @@
 function __fish_get_docker_arguments
-    set -e argv[1]
-    argparse -s --name=docker \
-        'config=' \
-        'c/context=' \
-        'D/debug' \
-        'H/host=' \
-        'l/log-level=' \
-        'tls' \
-        'tlscacert=' \
-        'tlscert=' \
-        'tlskey=' \
-        'tlsverify' \
-        'v/version' \
-        -- $argv &> /dev/null
-        or return 1
-    echo $argv
+  set cmd (commandline -poc)
+  set -e cmd[1]
+
+  argparse -s --name=docker \
+    'config=' \
+    'c/context=' \
+    'D/debug' \
+    'H/host=' \
+    'l/log-level=' \
+    'tls' \
+    'tlscacert=' \
+    'tlscert=' \
+    'tlskey=' \
+    'tlsverify' \
+    'v/version' \
+    -- $cmd &> /dev/null
+    or return 1
+
+  for arg in $argv
+    echo $arg
+  end
 end
 
 
 function __fish_is_first_docker_argument
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $cmd)
-    test (count $tokens) -eq "0"
+  set -l args (__fish_get_docker_arguments)
+  set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $args)
+  test (count $tokens) -eq "0"
 end
 
 
 function __fish_docker_arguments_startswith
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\b.*" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_arguments)
+  if string match -qr -- "^$argv\b.*" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_docker_arguments_equals
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\$" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_arguments)
+  if string match -qr -- "^$argv\$" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_print_docker_networks --description 'Print a list of docker networks'
-    docker network ls --format "{{.Name}}" | command sort
-    docker network ls --format "{{.ID}}\t{{.Name}}" | command sort
+  docker network ls --format "{{.Name}}" | command sort
+  docker network ls --format "{{.ID}}\t{{.Name}}" | command sort
 end
 
 
 function __fish_print_docker_images --description 'Print a list of docker images'
-    docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
-    docker images --format "{{.ID}}\t{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
+  docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
+  docker images --format "{{.ID}}\t{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
 end
 
 
 function __fish_print_docker_repositories --description 'Print a list of docker repositories'
-    docker images --format "{{.Repository}}" | command grep -v '<none>' | command sort | command uniq
+  docker images --format "{{.Repository}}" | command grep -v '<none>' | command sort | command uniq
 end
 
 
 function __fish_print_docker_containers --description 'Print a list of docker containers'
-    if test -n "$argv"
-        for stat in $argv
-            docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
-            docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
-        end
-    else
-        docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
-        docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
+  if test -n "$argv"
+    for stat in $argv
+      docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
+      docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
     end
+  else
+    docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
+    docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
+  end
 end
 
 
 function __fish_print_docker_volumes --description 'Print a list of docker volumes'
-    docker volume ls --format "{{.Name}}"
+  docker volume ls --format "{{.Name}}"
 end
 
 
@@ -232,7 +237,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container wait' -fka '
 complete -c docker -n '__fish_is_first_docker_argument' -l config -r -d 'Location of client config files (default "/home/jon/.docker")'
 complete -c docker -n '__fish_is_first_docker_argument' -l context -s c -r -d 'Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker context use")'
 complete -c docker -n '__fish_is_first_docker_argument' -l debug -s D -d 'Enable debug mode'
-complete -c docker -n '__fish_is_first_docker_argument' -l host -s H -r -d 'Daemon socket(s) to connect to'
+complete -c docker -n '__fish_is_first_docker_argument' -l host -s H -r -d 'Daemon socket to connect to'
 complete -c docker -n '__fish_is_first_docker_argument' -l log-level -s l -r -d 'Set the logging level ("debug", "info", "warn", "error", "fatal") (default "info")'
 complete -c docker -n '__fish_is_first_docker_argument' -l tls -d 'Use TLS; implied by --tlsverify'
 complete -c docker -n '__fish_is_first_docker_argument' -l tlscacert -r -d 'Trust certs signed only by this CA (default "/home/jon/.docker/ca.pem")'
@@ -249,82 +254,184 @@ complete -c docker -n '__fish_docker_arguments_startswith attach' -l no-stdin -d
 complete -c docker -n '__fish_docker_arguments_startswith attach' -l sig-proxy -d 'Proxy all received signals to the process (default true)'
 
 # docker build
-# Usage: docker build [OPTIONS] PATH | URL | -
+# Usage: docker buildx build [OPTIONS] PATH | URL | -
 complete -c docker -n '__fish_is_first_docker_argument' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l add-host -r -d 'Add a custom host-to-IP mapping (format: "host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l allow -r -d 'Allow extra privileged entitlement (e.g., "network.host", "security.insecure")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l attest -r -d 'Attestation parameters (format: "type=sbom,generator=image")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l build-arg -r -d 'Set build-time variables'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cache-from -r -d 'Images to consider as cache sources'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l build-context -r -d 'Additional build contexts (e.g., name=path)'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l cache-from -r -d 'External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l cache-to -r -d 'Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l compress -d 'Compress the build context using gzip'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cpu-period -r -d 'Limit the CPU CFS (Completely Fair Scheduler) period'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cpu-quota -r -d 'Limit the CPU CFS (Completely Fair Scheduler) quota'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cpu-shares -s c -r -d 'CPU shares (relative weight)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l force-rm -d 'Always remove intermediate containers'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l file -s f -r -d 'Name of the Dockerfile (default: "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l iidfile -r -d 'Write the image ID to the file'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l label -r -d 'Set metadata for an image'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l load -d 'Shorthand for "--output=type=docker"'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l metadata-file -r -d 'Write build result metadata to the file'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l network -r -d 'Set the networking mode for the "RUN" instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l no-cache -d 'Do not use cache when building the image'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l platform -r -d 'Set platform if server is multi-platform capable'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l pull -d 'Always attempt to pull a newer version of the image'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l no-cache-filter -r -d 'Do not cache specified stages'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l output -s o -r -d 'Output destination (format: "type=local,dest=path")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l platform -r -d 'Set target platform for build'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l progress -r -d 'Set type of progress output ("auto", "plain", "tty"). Use plain to show container output (default "auto")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l provenance -r -d 'Shorthand for "--attest=type=provenance"'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l pull -d 'Always attempt to pull all referenced images'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l push -d 'Shorthand for "--output=type=registry"'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l security-opt -r -d 'Security options'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l sbom -r -d 'Shorthand for "--attest=type=sbom"'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l secret -r -d 'Secret to expose to the build (format: "id=mysecret[,src=/local/secret]")'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l shm-size -r -d 'Size of "/dev/shm"'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
-complete -c docker -n '__fish_docker_arguments_startswith build' -l target -r -d 'Set the target build stage to build.'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l ssh -r -d 'SSH agent socket or keys to expose to the build (format: "default|<id>[=<socket>|<key>[,<key>]]")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l tag -s t -r -d 'Name and optionally a tag (format: "name:tag")'
+complete -c docker -n '__fish_docker_arguments_startswith build' -l target -r -d 'Set the target build stage to build'
 complete -c docker -n '__fish_docker_arguments_startswith build' -l ulimit -r -d 'Ulimit options (default [])'
 
 # docker builder
-# Usage: docker builder COMMAND
+# Usage: docker buildx [OPTIONS] COMMAND
 complete -c docker -n '__fish_is_first_docker_argument' -fa builder -d 'Manage builds'
+complete -c docker -n '__fish_docker_arguments_startswith builder' -l builder -r -d 'Override the configured builder instance (default "default")'
+
+# docker builder bake
+# Usage: docker buildx bake [OPTIONS] [TARGET...]
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa bake -d 'Build from a file'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l file -s f -r -d 'Build definition file'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l load -d 'Shorthand for "--set=*.output=type=docker"'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l metadata-file -r -d 'Write build result metadata to the file'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l no-cache -d 'Do not use cache when building the image'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l print -d 'Print the options without building'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l progress -r -d 'Set type of progress output ("auto", "plain", "tty"). Use plain to show container output (default "auto")'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l provenance -r -d 'Shorthand for "--set=*.attest=type=provenance"'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l pull -d 'Always attempt to pull all referenced images'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l push -d 'Shorthand for "--set=*.output=type=registry"'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l sbom -r -d 'Shorthand for "--set=*.attest=type=sbom"'
+complete -c docker -n '__fish_docker_arguments_startswith builder bake' -l set -r -d 'Override target value (e.g., "targetpattern.key=value")'
 
 # docker builder build
-# Usage: docker builder build [OPTIONS] PATH | URL | -
-complete -c docker -n '__fish_docker_arguments_equals builder' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
+# Usage: docker buildx build [OPTIONS] PATH | URL | -
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa build -d 'Start a build'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l add-host -r -d 'Add a custom host-to-IP mapping (format: "host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l allow -r -d 'Allow extra privileged entitlement (e.g., "network.host", "security.insecure")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l attest -r -d 'Attestation parameters (format: "type=sbom,generator=image")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l build-arg -r -d 'Set build-time variables'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cache-from -r -d 'Images to consider as cache sources'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l build-context -r -d 'Additional build contexts (e.g., name=path)'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cache-from -r -d 'External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cache-to -r -d 'Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l compress -d 'Compress the build context using gzip'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpu-period -r -d 'Limit the CPU CFS (Completely Fair Scheduler) period'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpu-quota -r -d 'Limit the CPU CFS (Completely Fair Scheduler) quota'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpu-shares -s c -r -d 'CPU shares (relative weight)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l force-rm -d 'Always remove intermediate containers'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l file -s f -r -d 'Name of the Dockerfile (default: "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l iidfile -r -d 'Write the image ID to the file'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l label -r -d 'Set metadata for an image'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l load -d 'Shorthand for "--output=type=docker"'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l metadata-file -r -d 'Write build result metadata to the file'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l network -r -d 'Set the networking mode for the "RUN" instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l no-cache -d 'Do not use cache when building the image'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l platform -r -d 'Set platform if server is multi-platform capable'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l pull -d 'Always attempt to pull a newer version of the image'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l no-cache-filter -r -d 'Do not cache specified stages'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l output -s o -r -d 'Output destination (format: "type=local,dest=path")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l platform -r -d 'Set target platform for build'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l progress -r -d 'Set type of progress output ("auto", "plain", "tty"). Use plain to show container output (default "auto")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l provenance -r -d 'Shorthand for "--attest=type=provenance"'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l pull -d 'Always attempt to pull all referenced images'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l push -d 'Shorthand for "--output=type=registry"'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l security-opt -r -d 'Security options'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l sbom -r -d 'Shorthand for "--attest=type=sbom"'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l secret -r -d 'Secret to expose to the build (format: "id=mysecret[,src=/local/secret]")'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l shm-size -r -d 'Size of "/dev/shm"'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
-complete -c docker -n '__fish_docker_arguments_startswith builder build' -l target -r -d 'Set the target build stage to build.'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l ssh -r -d 'SSH agent socket or keys to expose to the build (format: "default|<id>[=<socket>|<key>[,<key>]]")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l tag -s t -r -d 'Name and optionally a tag (format: "name:tag")'
+complete -c docker -n '__fish_docker_arguments_startswith builder build' -l target -r -d 'Set the target build stage to build'
 complete -c docker -n '__fish_docker_arguments_startswith builder build' -l ulimit -r -d 'Ulimit options (default [])'
 
+# docker builder create
+# Usage: docker buildx create [OPTIONS] [CONTEXT|ENDPOINT]
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa create -d 'Create a new builder instance'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l append -d 'Append a node to builder instead of changing it'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l bootstrap -d 'Boot builder after creation'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l buildkitd-flags -r -d 'Flags for buildkitd daemon'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l config -r -d 'BuildKit config file'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l driver -r -d 'Driver to use (available: "docker-container", "kubernetes", "remote")'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l driver-opt -r -d 'Options for the driver'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l leave -d 'Remove a node from builder instead of changing it'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l name -r -d 'Builder instance name'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l node -r -d 'Create/modify node with given name'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l platform -r -d 'Fixed platforms for current node'
+complete -c docker -n '__fish_docker_arguments_startswith builder create' -l use -d 'Set the current builder instance'
+
+# docker builder du
+# Usage: docker buildx du
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa du -d 'Disk usage'
+complete -c docker -n '__fish_docker_arguments_startswith builder du' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder du' -l filter -r -d 'Provide filter values'
+complete -c docker -n '__fish_docker_arguments_startswith builder du' -l verbose -d 'Provide a more verbose output'
+
+# docker builder imagetools
+# Usage: docker buildx imagetools [OPTIONS] COMMAND
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa imagetools -d 'Commands to work on images in registry'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools' -l builder -r -d 'Override the configured builder instance (default "default")'
+
+# docker builder imagetools create
+# Usage: docker buildx imagetools create [OPTIONS] [SOURCE] [SOURCE...]
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools' -fa create -d 'Create a new image based on source images'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l append -d 'Append to existing manifest'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l dry-run -d 'Show final image instead of pushing'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l file -s f -r -d 'Read source descriptor from file'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l progress -r -d 'Set type of progress output ("auto", "plain", "tty"). Use plain to show container output (default "auto")'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools create' -l tag -s t -r -d 'Set reference for new image'
+
+# docker builder imagetools inspect
+# Usage: docker buildx imagetools inspect [OPTIONS] NAME
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools' -fa inspect -d 'Show details of an image in the registry'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools inspect' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools inspect' -l format -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith builder imagetools inspect' -l raw -d 'Show original, unformatted JSON manifest'
+
+# docker builder inspect
+# Usage: docker buildx inspect [NAME]
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa inspect -d 'Inspect current builder instance'
+complete -c docker -n '__fish_docker_arguments_startswith builder inspect' -l bootstrap -d 'Ensure builder has booted before inspecting'
+complete -c docker -n '__fish_docker_arguments_startswith builder inspect' -l builder -r -d 'Override the configured builder instance (default "default")'
+
+# docker builder ls
+# Usage: docker buildx ls
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa ls -d 'List builder instances'
+
 # docker builder prune
-# Usage: docker builder prune
-complete -c docker -n '__fish_docker_arguments_equals builder' -fa prune -d 'Remove build cache'
-complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l all -s a -d 'Remove all unused build cache, not just dangling ones'
-complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l filter -r -d 'Provide filter values (e.g. "until=24h")'
+# Usage: docker buildx prune
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa prune -d 'Remove build cache'
+complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l all -s a -d 'Include internal/frontend images'
+complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l filter -r -d 'Provide filter values (e.g., "until=24h")'
 complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l force -s f -d 'Do not prompt for confirmation'
 complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l keep-storage -r -d 'Amount of disk space to keep for cache'
+complete -c docker -n '__fish_docker_arguments_startswith builder prune' -l verbose -d 'Provide a more verbose output'
+
+# docker builder rm
+# Usage: docker buildx rm [NAME]
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa rm -d 'Remove a builder instance'
+complete -c docker -n '__fish_docker_arguments_startswith builder rm' -l all-inactive -d 'Remove all inactive builders'
+complete -c docker -n '__fish_docker_arguments_startswith builder rm' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder rm' -l force -s f -d 'Do not prompt for confirmation'
+complete -c docker -n '__fish_docker_arguments_startswith builder rm' -l keep-daemon -d 'Keep the buildkitd daemon running'
+complete -c docker -n '__fish_docker_arguments_startswith builder rm' -l keep-state -d 'Keep BuildKit state'
+
+# docker builder stop
+# Usage: docker buildx stop [NAME]
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa stop -d 'Stop builder instance'
+complete -c docker -n '__fish_docker_arguments_startswith builder stop' -l builder -r -d 'Override the configured builder instance (default "default")'
+
+# docker builder use
+# Usage: docker buildx use [OPTIONS] NAME
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa use -d 'Set the current builder instance'
+complete -c docker -n '__fish_docker_arguments_startswith builder use' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith builder use' -l default -d 'Set builder as default for current context'
+complete -c docker -n '__fish_docker_arguments_startswith builder use' -l global -d 'Builder persists context changes'
+
+# docker builder version
+# Usage: docker buildx version
+complete -c docker -n '__fish_docker_arguments_startswith builder' -fa version -d 'Show buildx version information'
 
 # docker commit
 # Usage: docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
@@ -391,6 +498,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container cp' -l quiet
 # Usage: docker container create [OPTIONS] IMAGE [COMMAND] [ARG...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa create -d 'Create a new container'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith container create' -l annotation -r -d 'Add an annotation to the container (passed through to the OCI runtime) (default map[])'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith container create' -l blkio-weight-device -r -d 'Block IO weight (relative device weight) (default [])'
@@ -575,6 +683,7 @@ complete -c docker -n '__fish_docker_arguments_startswith container rm' -l volum
 # Usage: docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]
 complete -c docker -n '__fish_docker_arguments_equals container' -fa run -d 'Create and run a new container from an image'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith container run' -l annotation -r -d 'Add an annotation to the container (passed through to the OCI runtime) (default map[])'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith container run' -l blkio-weight-device -r -d 'Block IO weight (relative device weight) (default [])'
@@ -783,6 +892,7 @@ complete -c docker -n '__fish_docker_arguments_startswith cp' -l quiet -s q -d '
 # Usage: docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa create -d 'Create a new container'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith create' -l annotation -r -d 'Add an annotation to the container (passed through to the OCI runtime) (default map[])'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith create' -l blkio-weight-device -r -d 'Block IO weight (relative device weight) (default [])'
@@ -920,36 +1030,38 @@ complete -c docker -n '__fish_docker_arguments_startswith history' -l quiet -s q
 complete -c docker -n '__fish_is_first_docker_argument' -fa image -d 'Manage images'
 
 # docker image build
-# Usage: docker image build [OPTIONS] PATH | URL | -
+# Usage: docker buildx build [OPTIONS] PATH | URL | -
 complete -c docker -n '__fish_docker_arguments_equals image' -fa build -d 'Build an image from a Dockerfile'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l add-host -r -d 'Add a custom host-to-IP mapping ("host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l add-host -r -d 'Add a custom host-to-IP mapping (format: "host:ip")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l allow -r -d 'Allow extra privileged entitlement (e.g., "network.host", "security.insecure")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l attest -r -d 'Attestation parameters (format: "type=sbom,generator=image")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l build-arg -r -d 'Set build-time variables'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cache-from -r -d 'Images to consider as cache sources'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l build-context -r -d 'Additional build contexts (e.g., name=path)'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l builder -r -d 'Override the configured builder instance (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l cache-from -r -d 'External cache sources (e.g., "user/app:cache", "type=local,src=path/to/dir")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l cache-to -r -d 'Cache export destinations (e.g., "user/app:cache", "type=local,dest=path/to/dir")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l cgroup-parent -r -d 'Optional parent cgroup for the container'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l compress -d 'Compress the build context using gzip'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpu-period -r -d 'Limit the CPU CFS (Completely Fair Scheduler) period'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpu-quota -r -d 'Limit the CPU CFS (Completely Fair Scheduler) quota'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpu-shares -s c -r -d 'CPU shares (relative weight)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpuset-cpus -r -d 'CPUs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l cpuset-mems -r -d 'MEMs in which to allow execution (0-3, 0,1)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l disable-content-trust -d 'Skip image verification (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l file -s f -r -d 'Name of the Dockerfile (Default is "PATH/Dockerfile")'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l force-rm -d 'Always remove intermediate containers'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l file -s f -r -d 'Name of the Dockerfile (default: "PATH/Dockerfile")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l iidfile -r -d 'Write the image ID to the file'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l isolation -r -d 'Container isolation technology'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l label -r -d 'Set metadata for an image'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l memory -s m -r -d 'Memory limit'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l memory-swap -r -d 'Swap limit equal to memory plus swap: -1 to enable unlimited swap'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l network -r -d 'Set the networking mode for the RUN instructions during build (default "default")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l load -d 'Shorthand for "--output=type=docker"'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l metadata-file -r -d 'Write build result metadata to the file'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l network -r -d 'Set the networking mode for the "RUN" instructions during build (default "default")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l no-cache -d 'Do not use cache when building the image'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l platform -r -d 'Set platform if server is multi-platform capable'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l pull -d 'Always attempt to pull a newer version of the image'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l no-cache-filter -r -d 'Do not cache specified stages'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l output -s o -r -d 'Output destination (format: "type=local,dest=path")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l platform -r -d 'Set target platform for build'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l progress -r -d 'Set type of progress output ("auto", "plain", "tty"). Use plain to show container output (default "auto")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l provenance -r -d 'Shorthand for "--attest=type=provenance"'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l pull -d 'Always attempt to pull all referenced images'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l push -d 'Shorthand for "--output=type=registry"'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l quiet -s q -d 'Suppress the build output and print image ID on success'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l rm -d 'Remove intermediate containers after a successful build (default true)'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l security-opt -r -d 'Security options'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l sbom -r -d 'Shorthand for "--attest=type=sbom"'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l secret -r -d 'Secret to expose to the build (format: "id=mysecret[,src=/local/secret]")'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l shm-size -r -d 'Size of "/dev/shm"'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l tag -s t -r -d 'Name and optionally a tag in the "name:tag" format'
-complete -c docker -n '__fish_docker_arguments_startswith image build' -l target -r -d 'Set the target build stage to build.'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l ssh -r -d 'SSH agent socket or keys to expose to the build (format: "default|<id>[=<socket>|<key>[,<key>]]")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l tag -s t -r -d 'Name and optionally a tag (format: "name:tag")'
+complete -c docker -n '__fish_docker_arguments_startswith image build' -l target -r -d 'Set the target build stage to build'
 complete -c docker -n '__fish_docker_arguments_startswith image build' -l ulimit -r -d 'Ulimit options (default [])'
 
 # docker image history
@@ -1045,7 +1157,7 @@ complete -c docker -n '__fish_docker_arguments_startswith import' -l platform -r
 # docker info
 # Usage: docker info [OPTIONS]
 complete -c docker -n '__fish_is_first_docker_argument' -fa info -d 'Display system-wide information'
-complete -c docker -n '__fish_docker_arguments_startswith info' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith info' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker inspect
 # Usage: docker inspect [OPTIONS] NAME|ID [NAME|ID...]
@@ -1355,6 +1467,7 @@ complete -c docker -n '__fish_docker_arguments_startswith rmi' -l no-prune -d 'D
 # Usage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 complete -c docker -n '__fish_is_first_docker_argument' -fa run -d 'Create and run a new container from an image'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l add-host -r -d 'Add a custom host-to-IP mapping (host:ip)'
+complete -c docker -n '__fish_docker_arguments_startswith run' -l annotation -r -d 'Add an annotation to the container (passed through to the OCI runtime) (default map[])'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l attach -s a -r -d 'Attach to STDIN, STDOUT or STDERR'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l blkio-weight -r -d 'Block IO (relative weight), between 10 and 1000, or 0 to disable (default 0)'
 complete -c docker -n '__fish_docker_arguments_startswith run' -l blkio-weight-device -r -d 'Block IO weight (relative device weight) (default [])'
@@ -1876,7 +1989,7 @@ complete -c docker -n '__fish_docker_arguments_startswith system events' -l unti
 # docker system info
 # Usage: docker system info [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals system' -fa info -d 'Display system-wide information'
-complete -c docker -n '__fish_docker_arguments_startswith system info' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith system info' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker system prune
 # Usage: docker system prune [OPTIONS]
@@ -1966,7 +2079,7 @@ complete -c docker -n '__fish_docker_arguments_startswith update' -l restart -r 
 # docker version
 # Usage: docker version [OPTIONS]
 complete -c docker -n '__fish_is_first_docker_argument' -fa version -d 'Show the Docker version information'
-complete -c docker -n '__fish_docker_arguments_startswith version' -l format -s f -r -d 'Format the output using the given Go template'
+complete -c docker -n '__fish_docker_arguments_startswith version' -l format -s f -r -d "Format output using a custom template: 'json':             Print in JSON format 'TEMPLATE':         Print output using the given Go template. Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates"
 
 # docker volume
 # Usage: docker volume COMMAND
@@ -1994,6 +2107,7 @@ complete -c docker -n '__fish_docker_arguments_startswith volume ls' -l quiet -s
 # docker volume prune
 # Usage: docker volume prune [OPTIONS]
 complete -c docker -n '__fish_docker_arguments_equals volume' -fa prune -d 'Remove all unused local volumes'
+complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l all -s a -d 'Remove all unused volumes, not just anonymous ones'
 complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l filter -r -d 'Provide filter values (e.g. "label=<label>")'
 complete -c docker -n '__fish_docker_arguments_startswith volume prune' -l force -s f -d 'Do not prompt for confirmation'
 

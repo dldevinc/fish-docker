@@ -1,80 +1,85 @@
 function __fish_get_docker_arguments
-    set -e argv[1]
-    argparse -s --name=docker \
-        'config=' \
-        'c/context=' \
-        'D/debug' \
-        'H/host=' \
-        'l/log-level=' \
-        'tls' \
-        'tlscacert=' \
-        'tlscert=' \
-        'tlskey=' \
-        'tlsverify' \
-        'v/version' \
-        -- $argv &> /dev/null
-        or return 1
-    echo $argv
+  set cmd (commandline -poc)
+  set -e cmd[1]
+
+  argparse -s --name=docker \
+    'config=' \
+    'c/context=' \
+    'D/debug' \
+    'H/host=' \
+    'l/log-level=' \
+    'tls' \
+    'tlscacert=' \
+    'tlscert=' \
+    'tlskey=' \
+    'tlsverify' \
+    'v/version' \
+    -- $cmd &> /dev/null
+    or return 1
+
+  for arg in $argv
+    echo $arg
+  end
 end
 
 
 function __fish_is_first_docker_argument
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $cmd)
-    test (count $tokens) -eq "0"
+  set -l args (__fish_get_docker_arguments)
+  set -l tokens (string replace -r --filter '^([^-].*)' '$1' -- $args)
+  test (count $tokens) -eq "0"
 end
 
 
 function __fish_docker_arguments_startswith
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\b.*" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_arguments)
+  if string match -qr -- "^$argv\b.*" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_docker_arguments_equals
-    set -l cmd (__fish_get_docker_arguments (commandline -poc) | tr ' ' \n)
-    if string match -qr -- "^$argv\$" "$cmd"
-        return 0
-    end
-    return 1
+  set -l args (__fish_get_docker_arguments)
+  if string match -qr -- "^$argv\$" "$args"
+    return 0
+  end
+  return 1
 end
 
 
 function __fish_print_docker_networks --description 'Print a list of docker networks'
-    docker network ls --format "{{.Name}}" | command sort
-    docker network ls --format "{{.ID}}\t{{.Name}}" | command sort
+  docker network ls --format "{{.Name}}" | command sort
+  docker network ls --format "{{.ID}}\t{{.Name}}" | command sort
 end
 
 
 function __fish_print_docker_images --description 'Print a list of docker images'
-    docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
-    docker images --format "{{.ID}}\t{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
+  docker images --format "{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
+  docker images --format "{{.ID}}\t{{.Repository}}:{{.Tag}}" | command grep -v '<none>' | command sort
 end
 
 
 function __fish_print_docker_repositories --description 'Print a list of docker repositories'
-    docker images --format "{{.Repository}}" | command grep -v '<none>' | command sort | command uniq
+  docker images --format "{{.Repository}}" | command grep -v '<none>' | command sort | command uniq
 end
 
 
 function __fish_print_docker_containers --description 'Print a list of docker containers'
-    if test -n "$argv"
-        for stat in $argv
-            docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
-            docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
-        end
-    else
-        docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
-        docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
+  if test -n "$argv"
+    for stat in $argv
+      docker ps -a --filter status=$stat --format "{{.Names}}\t{{.Image}}" | command sort
+      docker ps -a --filter status=$stat --format "{{.ID}}\t{{.Image}}" | command sort
     end
+  else
+    docker ps -a --format "{{.Names}}\t{{.Image}}" | command sort
+    docker ps -a --format "{{.ID}}\t{{.Image}}" | command sort
+  end
 end
 
 
 function __fish_print_docker_volumes --description 'Print a list of docker volumes'
-    docker volume ls --format "{{.Name}}"
+  docker volume ls --format "{{.Name}}"
 end
 
 
