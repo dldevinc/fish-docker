@@ -137,6 +137,7 @@ complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l env-f
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l file -s f -r -d 'Compose configuration files'
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l parallel -r -d 'Control max parallelism, -1 for unlimited (default -1)'
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l profile -r -d 'Specify a profile to enable'
+complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l progress -r -d 'Set type of progress output (auto, tty, plain, quiet) (default "auto")'
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l project-directory -r -d 'Specify an alternate working directory (default: the path of the, first specified, Compose file)'
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l project-name -s p -r -d 'Project name'
 
@@ -144,10 +145,10 @@ complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -l proje
 # Usage: docker compose build [OPTIONS] [SERVICE...]
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa build -d 'Build or rebuild services'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l build-arg -r -d 'Set build-time variables for services.'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l builder -r -d 'Set builder to use.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l memory -s m -r -d 'Set memory limit for the build container. Not supported by BuildKit.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l no-cache -d 'Do not use cache when building the image'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l progress -r -d 'Set type of progress output (auto, tty, plain, quiet) (default "auto")'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l pull -d 'Always attempt to pull a newer version of the image.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l push -d 'Push service images.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith build' -l quiet -s q -d "Don't print anything to STDOUT"
@@ -177,7 +178,7 @@ complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa cp -
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith cp' -l archive -s a -d 'Archive mode (copy all uid/gid information)'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith cp' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith cp' -l follow-link -s L -d 'Always follow symbol link in SRC_PATH'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith cp' -l index -r -d 'Index of the container if there are multiple instances of a service .'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith cp' -l index -r -d 'index of the container if service has multiple replicas'
 
 # docker-compose create
 # Usage: docker compose create [OPTIONS] [SERVICE...]
@@ -192,13 +193,13 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith create
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith create' -l scale -r -d 'Scale SERVICE to NUM instances. Overrides the scale setting in the Compose file if present.'
 
 # docker-compose down
-# Usage: docker compose down [OPTIONS]
+# Usage: docker compose down [OPTIONS] [SERVICES]
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa down -d 'Stop and remove containers, networks'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l remove-orphans -d 'Remove containers for services not defined in the Compose file.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l rmi -r -d "Remove images used by services. "local" remove only images that don't have a custom tag ("local"|"all")" -d "Remove images used by services. "local" remove only images that don't have a custom tag ("local"|"all")"
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds (default 10)'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l volumes -s v -r -d 'Remove named volumes declared in the volumes section of the Compose file and anonymous volumes attached to containers.'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith down' -l volumes -s v -d 'Remove named volumes declared in the "volumes" section of the Compose file and anonymous volumes attached to containers.'
 
 # docker-compose events
 # Usage: docker compose events [OPTIONS] [SERVICE...]
@@ -212,7 +213,7 @@ complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa exec
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l detach -s d -d 'Detached mode: Run command in the background.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l env -s e -r -d 'Set environment variables'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l index -r -d 'index of the container if there are multiple instances of a service [default: 1]. (default 1)'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l index -r -d 'index of the container if service has multiple replicas'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l no-TTY -s T -r -d 'compose exec   Disable pseudo-TTY allocation. By default docker compose exec allocates a TTY. (default true)'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l privileged -d 'Give extended privileges to the process.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith exec' -l user -s u -r -d 'Run the command as this user.'
@@ -262,7 +263,7 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith pause'
 # Usage: docker compose port [OPTIONS] SERVICE PRIVATE_PORT
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa port -d 'Print the public port for a port binding.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith port' -l dry-run -d 'Execute command in dry run mode'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith port' -l index -r -d 'index of the container if service has multiple replicas (default 1)'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith port' -l index -r -d 'index of the container if service has multiple replicas'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith port' -l protocol -r -d 'tcp or udp (default "tcp")'
 
 # docker-compose ps
@@ -298,7 +299,7 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith push' 
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa restart -d 'Restart service containers'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith restart' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith restart' -l no-deps -d "Don't restart dependent services."
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith restart' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds (default 10)'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith restart' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds'
 
 # docker-compose rm
 # Usage: docker compose rm [OPTIONS] [SERVICE...]
@@ -312,6 +313,8 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith rm' -l
 # Usage: docker compose run [OPTIONS] SERVICE [COMMAND] [ARGS...]
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa run -d 'Run a one-off command on a service.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l build -d 'Build image before starting container.'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l cap-add -r -d 'Add Linux capabilities'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l cap-drop -r -d 'Drop Linux capabilities'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l detach -s d -d 'Run container in background and print container ID'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith run' -l entrypoint -r -d 'Override the entrypoint of the image'
@@ -340,7 +343,7 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith start'
 # Usage: docker compose stop [OPTIONS] [SERVICE...]
 complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa stop -d 'Stop services'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith stop' -l dry-run -d 'Execute command in dry run mode'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith stop' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds (default 10)'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith stop' -l timeout -s t -r -d 'Specify a shutdown timeout in seconds'
 
 # docker-compose top
 # Usage: docker compose top [SERVICES...]
@@ -376,7 +379,7 @@ complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l remove-orphans -d 'Remove containers for services not defined in the Compose file.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l renew-anon-volumes -s V -d 'Recreate anonymous volumes instead of retrieving data from the previous containers.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l scale -r -d 'Scale SERVICE to NUM instances. Overrides the scale setting in the Compose file if present.'
-complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l timeout -s t -r -d 'Use this timeout in seconds for container shutdown when attached or when containers are already running. (default 10)'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l timeout -s t -r -d 'Use this timeout in seconds for container shutdown when attached or when containers are already running.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l timestamps -d 'Show timestamps.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l wait -d 'Wait for services to be running|healthy. Implies detached mode.'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith up' -l wait-timeout -r -d 'timeout waiting for application to be running|healthy.'
@@ -387,3 +390,9 @@ complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa vers
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith version' -l dry-run -d 'Execute command in dry run mode'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith version' -l format -s f -r -d 'Format the output. Values: [pretty | json]. (Default: pretty)'
 complete -c docker-compose -n '__fish_docker_compose_arguments_startswith version' -l short -d "Shows only Compose's version number."
+
+# docker-compose wait
+# Usage: docker compose wait SERVICE [SERVICE...] [OPTIONS]
+complete -c docker-compose -n '__fish_is_first_docker_compose_argument' -fa wait -d 'Block until the first service container stops'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith wait' -l down-project -d 'Drops project when the first container stops'
+complete -c docker-compose -n '__fish_docker_compose_arguments_startswith wait' -l dry-run -d 'Execute command in dry run mode'
